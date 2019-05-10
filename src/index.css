@@ -1,0 +1,339 @@
+body {
+	margin: 0;
+	padding: 0;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+             "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+             SimSun, sans-serif;
+    white-space: pre-wrap;  /* JS can use new line */
+}
+
+* {
+font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+             "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+             SimSun, sans-serif;
+}
+
+.baseDiv{
+	padding: 20px;
+	padding-bottom: 100px;
+}
+.iItem_div{
+	display: flex;
+	flex-direction: row;
+}
+.block{
+	margin-left: 6px;
+}
+
+
+.ant-back-top {
+  bottom: 80px;
+  right:85px; /* 40+right padding */
+}
+.ant-back-top-inner {
+  height: 30px;
+  width: 100px;
+  line-height: 30px; /* must same as height */
+  border-radius: 4px;
+  background-color: #1088e9;
+  color: #fff;
+  text-align: center;
+  font-size: 14px;
+}
+
+
+.IntentItem-vertical-div{
+	width:100%;
+	overflow-x: auto; /* Can scroll if not show full data */
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	align-items: flex-start;
+}
+
+.IntentItem-intentTitle{
+	width:100%;
+	overflow-x: auto;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;  /* center horizontally */
+
+	text-align: center;
+	font-size: 14px;
+	padding: 13px 18px 13px 18px;
+	color: rgba(0,0,0,0.85);
+	background-color: rgba(0,0,0,0.02);
+
+	border-width: thin;
+	border-style: solid;
+    border-color: rgba(0,0,0,0.15);
+}
+
+.IntentItem-container-div {
+	width:100%;
+	overflow-x: auto;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: flex-start;
+
+	padding: 18px;
+	border-width: thin;
+	border-style: solid;
+    border-color: rgba(0,0,0,0.15);
+    border-top-width:0;
+}
+
+.IntentItem-keywordReply-div{
+	width:80%;
+	overflow-x: auto;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: flex-start;
+	float:left;line-height:30px;
+}
+
+.IntentItem-keyword-div{
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	align-items: flex-start;
+}
+.IntentItem-keyword-tag {
+}
+.IntentItem-referName-div {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: flex-start;
+
+
+	word-wrap: break-word;
+	line-height: normal;
+}
+.IntentItem-keyword-tf {
+	margin-top: 2px;
+	width: 200px;
+}
+
+.testChatbot_keyword_item{
+	font-size: 12px;
+	background-color: rgba(255,255,255,0.91); 
+	border: 2px solid #1890ff; 
+	border-radius: 5px;
+	padding: 3px 8px;
+	word-wrap: break-word;
+	margin-left:0px;
+	/* line-height: normal; */
+}
+
+.IntentItem-reply-div{
+	margin-left: 8px;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	align-items: flex-start;
+}
+.div-horizontal-start{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: flex-start;
+}
+.div-vertical-start{
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	align-items: flex-start;
+	line-height: normal;
+}
+
+.div-horizontal-center{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+	line-height: normal;
+}
+.div-vertical-center{
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	align-items: center;
+	line-height: normal;
+}
+
+
+
+.IntentItem-reply-tag {
+}
+.IntentItem-reply-tf {
+	width: 200px;
+}
+.IntentItem-reply-link-tf {
+	width: 200px;
+	
+	
+}
+
+.IntentItem-control_root-div{
+	float: right;
+	width:20%;
+	height: 100%;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+}
+
+.IntentItem-control-divider{
+	min-height: 50px;
+	max-height: 80px;
+}
+
+.IntentItem-control-div{
+	margin-left: 5px;
+	float: right;
+	width:20%;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	align-items: flex-start;
+}
+.IntentItem-control-submit{
+}
+
+.IntentItem-control-undo{
+	margin-top: 10px;
+}
+
+.IntentItem-control-delete{
+	margin-top: 10px;
+}
+
+.float_btn_testChatbot{
+	position:fixed;
+	bottom:40px;	/* Place the button at the bottom of the page */
+	right:25px;	/* Place the button at the bottom of the page */
+	z-index: 99;	/* Make sure it does not overlap */
+	box-shadow: 2px 2px 3px #999;
+}
+
+.testChatbot_float_div{
+	position:fixed;
+	background-color: #6F0;
+	width: 70%;
+	height: 70%;
+	top:10%; left: 15%;
+	z-index: 99;	/* Make sure it does not overlap */
+	box-shadow: 1px 1px 2px 2px #888;
+	background-color: rgba(255,255,255,1); 
+
+	/* Vertical */
+	overflow: hidden; /* Can scroll if not show full data */
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	align-items: flex-start;
+
+
+}
+
+.testChatbot_msg_div{
+	width:100%;
+	height:100%;
+	overflow-x: auto; /* Can scroll if not show full data */
+	display: flex;
+	flex-direction: column; /* vertical */
+	flex-wrap: nowrap;
+	align-items: flex-start;
+
+	background-color: rgba(0,0,0,0.04);
+
+	/* hidden scrollbar but can scroll */
+	overflow-y: scroll;
+	box-sizing: content-box;
+	padding-right: 17px;
+
+}
+
+.testChatbot_suggestion_div{
+	width:100%;
+
+	overflow-x: visible; /* Can scroll if not show full data */
+	display: flex;
+	flex-direction: row; /* horizontal */
+	flex-wrap: nowrap;
+	align-items: center;
+
+	padding: 5px 0px;
+
+	background-color: rgba(255,255,255,1);
+}
+
+.testChatbot_suggestion_item{
+	font-size: 15px;
+	background-color: rgba(255,255,255,0.91); 
+	border: 2px solid #1890ff; 
+	border-radius: 5px;
+	padding: 3px 8px;
+	word-wrap: break-word;
+	margin-left: 10px;
+
+
+	/* line-height: normal; */
+}
+
+.testChatbot_input_div{
+	width:100%;
+	overflow-x: visible; /* Can scroll if not show full data */
+	display: flex;
+	flex-direction: row; /* horizontal */
+	flex-wrap: nowrap;
+	align-items: center;
+
+	padding: 5px 10px 10px 10px;
+
+	background-color: rgba(255,255,255,1); 
+}
+
+.testChatbot_msg_self_div{
+	max-width: 70%;
+
+	background-color: rgba(255,255,255,0.91); 
+	border: 1px solid rgba(0,0,0,0.12);
+	margin-top:10px;
+	margin-left:auto; margin-right:10px;
+	border-radius: 5px;
+	padding: 5px 10px;
+	word-wrap: break-word;
+	/* line-height: normal; */
+}
+
+.testChatbot_msg_another_div{
+	max-width: 70%;
+
+	background-color: rgba(255,255,255,0.91); 
+	border: 1px solid rgba(24,144,255,0.35); 
+	margin-top:10px;
+	margin-left:10px; margin-right:auto;
+	border-radius: 5px;
+	padding: 5px 10px;
+	word-wrap: break-word;
+	/* line-height: normal; */
+}
+
+
+
+
+.testChatbot_close_btn{
+	position:absolute;
+	top:5px;	/* Place the button at the bottom of the page */
+	right:5px;	/* Place the button at the bottom of the page */
+	z-index: 200;	/* Make sure it does not overlap */
+}
+
+
+
