@@ -1,0 +1,28 @@
+* {
+    font-family: '微軟正黑體','CircularStd';
+}
+
+body {
+    background-color: #FAFAFA;
+}
+.container_flex{
+    margin-top: 50px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.header__title {
+    
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.header__button {
+    background-color: #1982D8;
+    /* width: 169px; */
+    padding: 10px 20px;
+    height: 43px;
+    border-radius: 4px 4px 4px 4px;
+    color: white;
+    border: none;
+}
