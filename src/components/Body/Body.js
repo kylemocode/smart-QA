@@ -8,49 +8,47 @@ export default class Body extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        count: 0,
-        itemList: []
+      itemList: []
     }
     this.addItem = this.addItem.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
   }
 
   addItem() {
-    this.setState({
-        count: ++this.state.count,
-        itemList: this.state.itemList.concat(this.state.count)
-        // itemList:　this.state.itemList.concat(<Item  key={this.state.count}/>)
-    })
+    const items = this.state.itemList ? this.state.itemList : []
+    const index = items.findIndex((data) => data.key == items.length); //check Item's key repeat
+    items.push(
+      <Item
+        key={index <0 ? items.length : `${items.length}${index}`}
+        deleteItem={this.deleteItem}
+        keyId={index <0 ? items.length : `${items.length}${index}`}
+      />
+    )
+    this.setState({itemList: items})
   }
 
   deleteItem(i) {
-    var listItem = this.state.itemList;
-    var filteredListItem = listItem.filter((item) => {
-      return listItem.indexOf(item) != i
-    })
-    // var filteredListItem = listItem.splice(i,1)
-    this.setState({
-        itemList: filteredListItem,
-        count: this.state.count-=1
-        })
-        
-    }
-  
+    const newItems = this.state.itemList;
+    const index = newItems.findIndex((data) => data.props.keyId == i);
+    newItems.splice(index,1);
+    this.setState({itemList: newItems});
+  }
+
 
 
   render() {
-        const { count,itemList } = this.state;
-        return (
-          <div className="body">
-            <New_Button count={count} addItem={this.addItem}/>
-            { itemList.map((item,i) => {
-              return <Item key={i} deleteItem={this.deleteItem} keyId={i}/>  
-            })}
-          </div>
-        )
-}
+    const {itemList } = this.state;
+    return (
+      <div className="body">
+        <New_Button count={itemList ? itemList.length : 0} addItem={this.addItem} />
+        <div>
+          {itemList}
+        </div>
+      </div>
+    )
+  }
 
 }
-  
+
 
 
