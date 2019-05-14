@@ -44,7 +44,7 @@ export default class Item extends Component {
         </div>
 
         <div>
-            <button className="cleanup_btn" onClick={this.props.deleteItem}><i class="fas fa-trash-alt"></i></button>  
+            <button className="cleanup_btn" onClick={this.props.deleteItem.bind(null,this.props.keyId)}><i class="fas fa-trash-alt"></i></button>  
         </div>    
       </div>
     )

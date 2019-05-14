@@ -12,25 +12,31 @@ export default class Body extends Component {
         itemList: []
     }
     this.addItem = this.addItem.bind(this);
-    // this.deleteItem = this.deleteItem.bind(this);
+    this.deleteItem = this.deleteItem.bind(this);
   }
 
   addItem() {
     this.setState({
         count: ++this.state.count,
         itemList: this.state.itemList.concat(this.state.count)
+        // itemList:　this.state.itemList.concat(<Item  key={this.state.count}/>)
     })
   }
 
-//   deleteItem(id) {
-//     this.setState({
-//         itemList: this.state.itemList.filter((item) => {
-//             return item.key !== id
-//         })
+  deleteItem(i) {
+    var listItem = this.state.itemList;
+    var filteredListItem = listItem.filter((item) => {
+      return listItem.indexOf(item) != i
+    })
+    // var filteredListItem = listItem.splice(i,1)
+    this.setState({
+        itemList: filteredListItem,
+        count: this.state.count-=1
+        })
         
-//     })
-//     console.log(id)
-// }
+    }
+  
+
 
   render() {
         const { count,itemList } = this.state;
@@ -38,12 +44,13 @@ export default class Body extends Component {
           <div className="body">
             <New_Button count={count} addItem={this.addItem}/>
             { itemList.map((item,i) => {
-                return <Item key={i} deleteItem={() => { console.log('test')}} keyId={i}/>  //deleteItem={this.deleteItem(i)}
+              return <Item key={i} deleteItem={this.deleteItem} keyId={i}/>  
             })}
           </div>
         )
-      }
-  }
+}
 
+}
   
+
 

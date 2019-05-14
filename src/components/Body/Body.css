@@ -16,6 +16,10 @@
     border-radius: 2px;
     color: white;
     margin-top: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 }
 
 .item_title {
