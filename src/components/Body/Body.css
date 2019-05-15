@@ -53,12 +53,24 @@
     justify-content: center;
     align-items: center;
 }
+@keyframes in{
+  from{
+      transform: translateX(-250px);
+      opacity: 0;
+  }
+  to{
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
 
 .item_container_flex {
     margin-top: 40px;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    animation: in 800ms;
+    transition: 700ms;
 }
 
 .item_status {
