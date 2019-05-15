@@ -50,6 +50,7 @@ export default class Item extends Component {
 
                 </div>
 
+
                 <div>
                     <button
                         className="cleanup_btn"
@@ -62,6 +63,37 @@ export default class Item extends Component {
                     >
                         <i class="fas fa-trash-alt"></i>
                     </button>
+
+                <div className="container item_input">
+                    <div className="row">
+                        <div className="col-sm-6">
+                            <p style={{fontSize: "14px"}}>當用戶輸入以下 相似 或 相同 關鍵字:</p>
+                            <textarea 
+                                className="item_textarea" 
+                                placeholder="新增關鍵字 (輸入enter區分關鍵字)" 
+                            >
+                            </textarea>
+                            
+                        </div>
+                        <div className="col-sm-6">
+                            <p style={{fontSize: "14px"}}>機器人回覆: (兩組以上對話將會隨機回復)</p>
+                            <div style={{display: "flex"}}>
+                                <select className="item_select">
+                                    <option value="" disabled selected>請選擇回覆訊息類型</option>
+                                    <option value="">純文字訊息</option>
+                                    <option value="">圖文訊息</option>
+                                    <option value="">超連結訊息</option>
+                                </select>
+                                <button className="item_btn"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr style={{margin: "0"}}/>
+                <div className="item_status">
+                    <p style={{fontSize: "14px"}}>智能對話狀態: {this.state.isOpen ? '開啟':'關閉'}</p>
+                    <ToggleButton style={{marginRight: '20px'}} handleOpen={this.handleOpen} isOpen={this.state.isOpen}/>
+
                 </div>
             </div>
         )
