@@ -63,7 +63,27 @@
     opacity: 1;
   }
 }
+@keyframes reveal{
+  from{
+      
+      opacity: 0;
+  }
+  to{
+    
+    opacity: 1;
+  }
+}
 
+@keyframes unreveal{
+  from{
+      
+      opacity: 1;
+  }
+  to{
+    
+    opacity: 0;
+  }
+}
 .item_container_flex {
     margin-top: 40px;
     display: flex;
@@ -88,11 +108,13 @@
   padding: 27px 32px;
   font-weight: bold;
   background-color: #fff;
+  animation: reveal 500ms;
+  transition: 400ms;
 }
 
 .item_textarea {
-  width: 370px;
-  min-height: 100px;
+  width: 280px;
+  height: 36px;
   border: solid 1px #F0F0F0;
   padding: 16px;
   box-sizing: border-box;
@@ -127,8 +149,8 @@
 
 .item_textCount {
   position: relative;
-  left: -40px;
-  bottom: 8px;
+  left: -23px;
+  bottom: -10px;
   font-size: 1px;
   color: #101010;
   z-index: 2;
