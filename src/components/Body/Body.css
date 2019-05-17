@@ -125,8 +125,44 @@
 
 }
 
+.item_textCount {
+  position: relative;
+  left: -40px;
+  bottom: 8px;
+  font-size: 1px;
+  color: #101010;
+  z-index: 2;
+}
 
+.item_warning {
+  font-size: 12px;
+  color: red;
+}
 
+.item_keyword {
+  display: flex;
+  background-color: #A5B1BC;
+  margin: 3px 0px;
+  margin-right: 16px;
+  height: 32px;
+  border-radius: 2px;
+  color: white;
+  font-size: 12px;
+  
+}
+
+select.decorated option:hover {
+  background-color: #A5B1BC;
+}
+
+select:focus > option:checked { 
+  background: #A5B1BC !important;
+}
+
+select option {
+  padding-top: 5px;
+  padding-bottom: 5px
+}
 /* toggle button */
 .toggleButton {
     display: flex;

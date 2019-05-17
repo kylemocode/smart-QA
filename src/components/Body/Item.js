@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import ToggleButton from './ToggleButton';
-
+import KeyWord from './KeyWord';
 
 export default class Item extends Component {
     constructor(props) {
@@ -9,13 +9,19 @@ export default class Item extends Component {
             isOpen: false,
             isReveal: false,
             del: false,
+            textCount: 0,
+            textAreaValue: '',
+            keywordList: []
         }
 
         this.handleOpen = this.handleOpen.bind(this);
         this.handleReveal = this.handleReveal.bind(this);
+        this.onTextInput = this.onTextInput.bind(this);
+        this.onKeywordSubmit = this.onKeywordSubmit.bind(this);
+        this.delKeyword = this.delKeyword.bind(this);
     }
 
-    handleOpen() {
+    handleOpen = () => {
         this.setState({
             isOpen: !this.state.isOpen
         })
@@ -27,7 +33,42 @@ export default class Item extends Component {
         })
     }
 
+    onTextInput(e) {
+        this.setState({
+            textCount:  e.target.value.length
+        })
+            
+    }
+
+    onKeywordSubmit(text) {
+        const keywords = this.state.keywordList ? this.state.keywordList : []
+        const index = keywords.findIndex((keyword) => keyword.key == keywords.length)
+        keywords.push(
+            <KeyWord 
+                keyword={text}
+                delKeyword={this.delKeyword}
+                key={index <0 ? keywords.length : `${keywords.length}${index}`}
+                keyId={index <0 ? keywords.length : `${keywords.length}${index}`}
+            />
+        )
+        this.setState({
+            keywordList: keywords
+        })
+        
+    }
+
+    delKeyword(i) {
+        const keywords = this.state.keywordList;
+        const index = keywords.findIndex((data) => data.props.keyId == i);
+        keywords.splice(index,1);
+        this.setState({itemList: keywords});
+
+    }
+
     render() {
+        const optionStyle={
+            height: "33px"
+        }
         return (
             <div
                 className="container item_container_flex"
@@ -48,19 +89,35 @@ export default class Item extends Component {
                                     <p style={{fontSize: "14px"}}>當用戶輸入以下 相似 或 相同 關鍵字:</p>
                                     <textarea 
                                         className="item_textarea" 
-                                        placeholder="新增關鍵字 (輸入enter區分關鍵字)" 
+                                        placeholder="新增關鍵字 (輸入enter區分關鍵字)"
+                                        onChange={this.onTextInput}
+                                        onKeyDown={(e) => {
+                                            // if(e.target.value.length>=50) {
+                                            //     e.returnValue = false;
+                                            // }
+                                            if(e.keyCode==13 && e.target.value!=='' && !e.target.value.includes('\n')) {
+                                                this.onKeywordSubmit(e.target.value);
+                                                e.target.value="";
+                                            }
+                                        }}
                                     >
                                     </textarea>
-                                    
+                                    <span className="item_textCount">{this.state.textCount}/50</span>
+                                    <div>
+                                        <span className="item_warning">{this.state.textCount>50?"※超過字數限制":""}</span>
+                                    </div>
+                                    <div style={{display:"flex",marginTop: "8px",flexWrap: "wrap"}}>
+                                        {this.state.keywordList}
+                                    </div>
                                 </div>
                                 <div className="col-sm-6">
                                     <p style={{fontSize: "14px"}}>機器人回覆: (兩組以上對話將會隨機回復)</p>
                                     <div style={{display: "flex"}}>
-                                        <select className="item_select">
-                                            <option value="" disabled selected>請選擇回覆訊息類型</option>
-                                            <option value="">純文字訊息</option>
-                                            <option value="">圖文訊息</option>
-                                            <option value="">超連結訊息</option>
+                                        <select className="item_select decorated">
+                                            <option value="" disabled selected style={optionStyle}>請選擇回覆訊息類型</option>
+                                            <option value="" style={optionStyle}>純文字訊息</option>
+                                            <option value="" style={optionStyle}>圖文訊息</option>
+                                            <option value="" style={optionStyle}>超連結訊息</option>
                                         </select>
                                         <button className="item_btn"><i class="fas fa-plus"></i></button>
                                     </div>
