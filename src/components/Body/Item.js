@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import ToggleButton from './ToggleButton';
 import KeyWord from './KeyWord';
 import Selector from './Selector';
+import Text from './selectorOptions/Text';
+import Link from './selectorOptions/Link';
+import Image from './selectorOptions/Image';
 
 export default class Item extends Component {
     constructor(props) {
@@ -12,7 +15,9 @@ export default class Item extends Component {
             del: false,
             textCount: 0,
             textAreaValue: '',
-            keywordList: []
+            keywordList: [],
+            selectedValue: '',
+            optionsList: []
         }
 
         // this.handleOpen = this.handleOpen.bind(this);
@@ -20,6 +25,12 @@ export default class Item extends Component {
         // this.onTextInput = this.onTextInput.bind(this);
         // this.onKeywordSubmit = this.onKeywordSubmit.bind(this);
         // this.delKeyword = this.delKeyword.bind(this);
+    }
+
+    handleSelectChange = (e) => {
+        this.setState({
+            selectedValue: e.target.value
+        })
     }
 
     handleOpen = () => {
@@ -67,6 +78,59 @@ export default class Item extends Component {
 
     }
 
+   addOption = () => {
+    const items = this.state.optionsList
+    const index = items.findIndex((data) => data.key == items.length);
+    switch(this.state.selectedValue){
+        case("text"):
+            items.push(
+                <Text
+                    key={index <0 ? items.length : `${items.length}${index}`}
+                    keyId={index <0 ? items.length : `${items.length}${index}`}
+                    delOption={this.delOption}
+      />
+            )
+            this.setState({
+                optionsList: items
+            })
+            console.log(this.state.optionsList)
+            break;
+        case("image"):
+            items.push(
+                <Image
+                    key={index <0 ? items.length : `${items.length}${index}`}
+                    keyId={index <0 ? items.length : `${items.length}${index}`}
+                    delOption={this.delOption}
+    />
+            )
+            this.setState({
+                optionsList: items
+            })
+            break;
+        case("link"):
+            items.push(
+                <Link
+                    key={index <0 ? items.length : `${items.length}${index}`}
+                    keyId={index <0 ? items.length : `${items.length}${index}`}
+                    delOption={this.delOption}
+    />
+            )
+            this.setState({
+                optionsList: items
+            })
+            break;
+        default:
+            return true;
+    }
+   }
+
+   delOption = (i) => {
+    const newOptions = this.state.optionsList;
+    const index = newOptions.findIndex((data) => data.props.keyId == i);
+    newOptions.splice(index,1);
+    this.setState({optionsList: newOptions});
+   }
+
     render() {
         
         return (
@@ -92,9 +156,6 @@ export default class Item extends Component {
                                     placeholder="新增關鍵字 (輸入enter區分關鍵字)"
                                     onChange={this.onTextInput}
                                     onKeyDown={(e) => {
-                                        // if(e.target.value.length>=50) {
-                                        //     e.returnValue = false;
-                                        // }
                                         if(e.keyCode==13 && e.target.value!=='' && !e.target.value.includes('\n')) {
                                             e.preventDefault();
                                             this.onKeywordSubmit(e.target.value);
@@ -109,21 +170,27 @@ export default class Item extends Component {
                                 </div>
                                 <div style={{display:"flex",marginTop: "8px",flexWrap: "wrap"}}>
                                     {this.state.keywordList}
+                                    
                                 </div>
                             </div>
                             <div className="col-sm-6">
                                 <p style={{fontSize: "14px"}}>機器人回覆:&nbsp; &nbsp; (兩組以上對話將會隨機回復)</p>
                                 <div className="container">
                                     <div className="row">
-                                        
                                         <div>
-                                            <Selector />
-                                            <Selector /> 
+                                            <Selector handleSelectChange={this.handleSelectChange} selectedValue={this.state.selectedValue}/>
+                                            
                                         </div>
-                                        <button className="item_btn"><i class="fas fa-plus"></i></button>
+                                        <button className="item_btn" onClick={this.addOption}><i class="fas fa-plus"></i></button>
+                                        
                                     </div>
+                                    
                                 </div>
+                                <div>
+                                    {this.state.optionsList}
+                                </div>  
                             </div>
+                                
                         </div>
                     </div>: ''}
                         <hr style={{margin: "0"}}/>
@@ -133,10 +200,7 @@ export default class Item extends Component {
 
                         </div>
                     </div>
-
                 </div>
-
-
                 <div>
                     <button
                         className="cleanup_btn"
@@ -149,10 +213,7 @@ export default class Item extends Component {
                     >
                         <i class="fas fa-trash-alt"></i>
                     </button>
-
-                
-                
-            </div>
+                </div>
         </div>
         )
     }

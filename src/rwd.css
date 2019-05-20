@@ -1,0 +1,17 @@
+@media screen and (max-width: 768px) {
+    .rwd_header {
+        display: block;
+        
+    }
+    .header__title{
+        position: relative;
+        top: 80px;
+    }
+    .header__button {
+        position: relative;
+        left: 80%;
+        bottom: 30px;
+        color: 16px;
+    }
+   
+}
