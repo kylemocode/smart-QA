@@ -135,13 +135,13 @@ export default class Item extends Component {
         
         return (
             <div
-                className="container item_container_flex"
+                className="container item_container_flex rwd_constainer"
                 style={{
                     transform: this.state.del ? 'translateX(250px)' : 'translateX(0px)' ,
                     opacity: this.state.del ? 0 : 1
                 }}
             >
-                <div style={{ width: '100%', marginRight: '20px' }}>
+                <div  className="rwd_itemcontainer">
                     <div>
                         <div className="item_title" style={{ backgroundColor: this.state.isOpen ? '#1982D8' : '#E0E0E0', transition: '0.3s' }}>
                             <p>按此編輯對話名稱</p>
@@ -149,10 +149,10 @@ export default class Item extends Component {
                         </div>
                         {this.state.isReveal? <div className="container item_input" style={{opacity: this.state.isReveal?1:0}}>
                         <div className="row">
-                            <div className="col-sm-6">
-                                <p style={{fontSize: "14px"}}>當用戶輸入以下 相似 或 相同 關鍵字:</p>
+                            <div className="col-md-6 col-sm-12">
+                                <p className="rwd_content" style={{fontSize: "14px"}}>當用戶輸入以下 相似 或 相同 關鍵字:</p>
                                 <input
-                                    className="item_textarea" 
+                                    className="item_textarea rwd_content" 
                                     placeholder="新增關鍵字 (輸入enter區分關鍵字)"
                                     onChange={this.onTextInput}
                                     onKeyDown={(e) => {
@@ -173,16 +173,17 @@ export default class Item extends Component {
                                     
                                 </div>
                             </div>
-                            <div className="col-sm-6">
-                                <p style={{fontSize: "14px"}}>機器人回覆:&nbsp; &nbsp; (兩組以上對話將會隨機回復)</p>
-                                <div className="container">
+                            <div className="col-md-6 col-sm-12 rwd_marginTop">
+                                <p className="rwd_content" style={{fontSize: "14px"}}>機器人回覆:&nbsp; &nbsp; (兩組以上對話將會隨機回復)</p>
+                                <div className="container rwd_content">
                                     <div className="row">
                                         <div>
                                             <Selector handleSelectChange={this.handleSelectChange} selectedValue={this.state.selectedValue}/>
                                             
                                         </div>
-                                        <button className="item_btn" onClick={this.addOption}><i class="fas fa-plus"></i></button>
-                                        
+                                        <div className="rwd_additemBtn">
+                                            <button className="item_btn" onClick={this.addOption}><i class="fas fa-plus"></i></button>
+                                        </div>
                                     </div>
                                     
                                 </div>
@@ -201,7 +202,7 @@ export default class Item extends Component {
                         </div>
                     </div>
                 </div>
-                <div>
+                <div className="rwd_delbtn">
                     <button
                         className="cleanup_btn"
                         onClick={

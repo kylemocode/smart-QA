@@ -9,9 +9,70 @@
     }
     .header__button {
         position: relative;
-        left: 80%;
+        left: 70%;
         bottom: 30px;
-        color: 16px;
+        font-size: 16px;
     }
-   
+    .rwd_delbtn {
+        position: absolute;
+        bottom: -50px;
+        right: 3%;
+
+    }
+    .rwd_constainer {
+        position: relative;
+        width: 100%;
+        margin-top: 80px;
+        /* padding-left: -50px;
+        padding-right: -50px; */
+    }
+
+    .rwd_itemcontainer {
+        margin: 0;
+        padding: 0;
+    }
+    .rwd_content {
+        width: 100%;
+        font-size: 16px;
+    }
+    .rwd_marginTop {
+        margin-top: 20px;
+    }
+    .optionStyle {
+        display: block;
+    }
+    .rwd_cleanup_btn {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 7px;
+    }
+    
+}
+
+
+@media screen and (max-width: 485px) {
+    .header__button {
+        position: relative;
+        left: 65%;
+        bottom: 30px;
+        font-size: 16px;
+    }
+}
+
+@media screen and (max-width: 420px) {
+    .header__button {
+        position: relative;
+        left: 53%;
+        bottom: 30px;
+        font-size: 16px;
+    }
+}
+
+@media screen and (max-width: 365px) {
+   .rwd_additemBtn {
+       display: flex;
+       justify-content: flex-end;
+       width: 95%;
+
+   }
 }

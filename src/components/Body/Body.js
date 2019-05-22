@@ -41,7 +41,7 @@ export default class Body extends Component {
     return (
       <div className="body">
         <New_Button count={itemList ? itemList.length : 0} addItem={this.addItem} />
-        <div>
+        <div style={{width: '100%'}}>
           {itemList}
         </div>
       </div>

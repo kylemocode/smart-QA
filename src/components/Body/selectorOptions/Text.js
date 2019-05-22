@@ -41,7 +41,7 @@ class Text extends React.Component {
     }
 
     return (
-      <div style={{marginTop: "20px",display: "flex",width:'100%'}}>
+      <div className="optionStyle">
         <div style={{position: "relative",width:'100%'}}>
             <div style={headerStyle}>
                 <p>純文字訊息</p>
@@ -53,7 +53,7 @@ class Text extends React.Component {
             </div>
         </div>
 
-        <div>
+        <div className="rwd_cleanup_btn">
             <button
             className="cleanup_btn"
             style={{marginLeft: "15px",marginTop: "-1px"}}

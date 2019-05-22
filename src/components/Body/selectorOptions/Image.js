@@ -42,7 +42,7 @@ class Image extends React.Component {
     }
 
     const uploadStyle = {
-        width: '400px',
+        width: '100%',
         height: '158px',
         backgroundColor: '#D8D8D8',
         border: 'solid 1px #F0F0F0',
@@ -54,7 +54,7 @@ class Image extends React.Component {
         fontSize: '12px'
     }
     return (
-      <div style={{marginTop: "20px",width:'100%',display: "flex"}}>
+      <div className="optionStyle">
         <div style={{position: "relative",width:'100%'}}>
             <div style={headerStyle}>
                 <p>圖文訊息</p>
@@ -72,7 +72,7 @@ class Image extends React.Component {
             </div>
         </div>
 
-        <div>
+        <div className="rwd_cleanup_btn">
             <button
             className="cleanup_btn"
             style={{marginLeft: "15px",marginTop: "-1px"}}
