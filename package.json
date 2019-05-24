@@ -4,9 +4,6 @@
   "private": true,
   "homepage": "https://ofel.ai/console/",
   "dependencies": {
-    "@material-ui/core": "^1.2.3",
-    "ajv": "^6.10.0",
-    "antd": "^3.16.6",
     "bootstrap": "^4.3.1",
     "circular-std": "^1.0.0",
     "peer": "^0.2.10",
