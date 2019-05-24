@@ -1,6 +1,6 @@
 {
   "name": "smartqa",
-  "version": "0.1.1",
+  "version": "2.0.1",
   "private": true,
   "homepage": "https://ofel.ai/console-v2",
   "dependencies": {
