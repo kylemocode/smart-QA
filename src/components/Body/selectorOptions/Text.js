@@ -44,7 +44,7 @@ class Text extends React.Component {
       <div className="optionStyle">
         <div style={{position: "relative",width:'100%'}}>
             <div style={headerStyle}>
-                <p>純文字訊息</p>
+                <p><img src="https://s3-ap-northeast-1.amazonaws.com/www.memepr.com/smartQA/path_513.png" style={{width:'12px',height: '12px',marginRight: '7px',color: 'white',marginBottom: '1px'}}></img>純文字訊息</p>
             </div>
             <div>
                 <textarea placeholder="請輸入文字訊息" style={textareaStyle} onChange={this.handleChange}>

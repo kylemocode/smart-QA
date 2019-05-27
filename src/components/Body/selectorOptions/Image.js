@@ -57,7 +57,7 @@ class Image extends React.Component {
       <div className="optionStyle">
         <div style={{position: "relative",width:'100%'}}>
             <div style={headerStyle}>
-                <p>圖文訊息</p>
+                <p><img src="https://s3-ap-northeast-1.amazonaws.com/www.memepr.com/smartQA/icon_pic.png" style={{width:'15px',height: '15px',marginRight: '7px'}}></img>圖文訊息</p>
             </div>
 
             <label style={uploadStyle}>

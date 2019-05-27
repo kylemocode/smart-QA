@@ -215,6 +215,7 @@ export default class Item extends Component {
                         <i class="fas fa-trash-alt"></i>
                     </button>
                 </div>
+                
         </div>
         )
     }

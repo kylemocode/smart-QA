@@ -30,7 +30,7 @@ const Link = (props) => {
         <div className="optionStyle">
           <div style={{position: "relative",width:'100%'}}>
               <div style={headerStyle}>
-                  <p>超連結訊息</p>
+                  <p><img src="https://s3-ap-northeast-1.amazonaws.com/www.memepr.com/smartQA/icon_link.png" style={{width:'15px',height: '15px',marginRight: '7px'}}></img>超連結訊息</p>
               </div>
               <div style={{display: 'flex',flexDirection:'column'}}>
                   <input placeholder="請輸入網址連結 ex: www.abc.com" style={{height: '49px',fontSize:'12px',color:'#101010',border:'solid 1px #F0F0F0',borderTop: 'none',borderBottom: 'none',padding: '16px'}}></input>
