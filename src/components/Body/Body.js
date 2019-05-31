@@ -8,11 +8,27 @@ export default class Body extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      itemList: []
+      itemList: [],
+      
     }
     this.addItem = this.addItem.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
   }
+
+  componentDidMount() {
+    let dataList = [];
+    fetch('https://ofel.ai/node/intent/list',{headers: {'ofelId':'222'}})
+      .then((data) => data.json())
+      .then((res) => res.data.map(qaItem => {
+        dataList.push(<Item 
+                        key={qaItem.id}
+                        deleteItem={this.deleteItem}
+                        keyId={qaItem.id}/>)
+      }))
+      .then(() => this.setState(() => ({
+        itemList: dataList
+      })))
+    }
 
   addItem() {
     const items = this.state.itemList ? this.state.itemList : []
@@ -37,12 +53,12 @@ export default class Body extends Component {
 
 
   render() {
-    const {itemList } = this.state;
+    
     return (
       <div className="body">
-        <New_Button count={itemList ? itemList.length : 0} addItem={this.addItem} />
+        <New_Button count={this.state.itemList ? this.state.itemList.length : 0} addItem={this.addItem} />
         <div style={{width: '100%'}}>
-          {itemList}
+          {this.state.itemList}
         </div>
       </div>
     )
