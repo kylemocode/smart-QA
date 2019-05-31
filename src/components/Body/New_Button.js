@@ -14,7 +14,7 @@ const New_Button = (props) => {
   return (
     <div className="container" style={{cursor: 'pointer'}}>
       <button style={btnStyle} onClick={props.addItem}>+  新增智能</button>
-      <span className="count">{props.count}/100</span>
+      <span className="count">{props.count}/{props.intentQuota}</span>
     </div>
   )
 }
