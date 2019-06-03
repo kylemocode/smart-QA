@@ -5,6 +5,7 @@ import Selector from './Selector';
 import Text from './selectorOptions/Text';
 import Link from './selectorOptions/Link';
 import Image from './selectorOptions/Image';
+import axios from 'axios';
 
 export default class Item extends Component {
     constructor(props) {
@@ -17,14 +18,22 @@ export default class Item extends Component {
             textAreaValue: '',
             keywordList: [],
             selectedValue: '',
-            optionsList: []
+            optionsList: [],
+            created: false
         }
 
-        // this.handleOpen = this.handleOpen.bind(this);
-        // this.handleReveal = this.handleReveal.bind(this);
-        // this.onTextInput = this.onTextInput.bind(this);
-        // this.onKeywordSubmit = this.onKeywordSubmit.bind(this);
-        // this.delKeyword = this.delKeyword.bind(this);
+        
+    }
+
+    componentDidMount() {
+       
+       setTimeout(() => {
+        this.setState(() => ({
+            isOpen: this.props.enable,
+            keywordList: this.props.keywords
+        }))
+        console.log(this.state.keywordList)
+       },0)
     }
 
     handleSelectChange = (e) => {
@@ -131,6 +140,28 @@ export default class Item extends Component {
     this.setState({optionsList: newOptions});
    }
 
+   saveqa = () => {
+        if(!this.props.isCreated) {
+            axios({ method: 'POST', url: 'https://ofel.ai/node/intent/create', headers: {'ofelId': '888'}, data: {
+                "intents":[
+                    {
+                      "enable": true,
+                      "keywords": ["oldmo","test"],
+                      "replys": [
+                        { "type": "text", "content": "你好有什麼幫到你?" }
+                      ]
+                    }
+                ]
+                } })
+                .then(() => this.setState({
+                    created: true
+                }))
+        }else{
+            //update api
+        }
+
+   }
+
     render() {
         
         return (
@@ -145,6 +176,7 @@ export default class Item extends Component {
                     <div>
                         <div className="item_title" style={{ backgroundColor: this.state.isOpen ? '#1982D8' : '#E0E0E0', transition: '0.3s' }}>
                             <p>按此編輯對話名稱</p>
+                            
                             <div style={{ backgroundColor: this.state.isOpen ? '#106fbc' : '#D5D5D5', transition: '0.3s' }} onClick={this.handleReveal}>{this.state.isReveal ? <i class="fas fa-chevron-up"></i> : <i class="fas fa-chevron-down"></i>}</div>
                         </div>
                         {this.state.isReveal? <div className="container item_input" style={{opacity: this.state.isReveal?1:0}}>
@@ -196,9 +228,12 @@ export default class Item extends Component {
                     </div>: ''}
                         <hr style={{margin: "0"}}/>
                         <div className="item_status">
-                            <p style={{fontSize: "14px"}}>智能對話狀態: {this.state.isOpen ? '開啟':'關閉'}</p>
-                            <ToggleButton style={{marginRight: '20px'}} handleOpen={this.handleOpen} isOpen={this.state.isOpen}/>
-
+                            <div style={{display: "flex",alignItems: 'center'}}>
+                                <p style={{fontSize: "14px"}} style={{marginRight: '20px',marginTop:'5px'}}>智能對話狀態: {this.state.isOpen ? '開啟':'關閉'}</p>
+                                <ToggleButton  handleOpen={this.handleOpen} isOpen={this.state.isOpen}/>
+                            </div>
+                            <button className="update_btn" style={{marginTop: '3px'}} onClick={this.saveqa}>{this.props.isCreated || this.state.created?"儲存":"建立"}</button>
+                            
                         </div>
                     </div>
                 </div>
@@ -209,6 +244,13 @@ export default class Item extends Component {
                             () => {
                                 setTimeout(() => this.props.deleteItem(this.props.keyId) , 700)
                                 this.setState({ del: true })
+                                axios({ method: 'POST', url: 'https://ofel.ai/node/intent/delete', headers: {'ofelId': '888'}, data: {
+                                    "intents":[
+                                        {
+                                         "uuid": this.props.uuid
+                                        }
+                                    ]
+                                    } })
                             }
                         }
                     >

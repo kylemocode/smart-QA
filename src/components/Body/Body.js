@@ -2,11 +2,18 @@ import React, { Component } from 'react'
 import New_Button from './New_Button';
 import './Body.css';
 import Item from './Item';
+import axios from 'axios';
 
 export default class Body extends Component {
 
   constructor(props) {
     super(props);
+
+    const {
+      ofelId
+    } = this.props;
+
+
     this.state = {
       itemList: []
     }
@@ -16,20 +23,23 @@ export default class Body extends Component {
 
   componentDidMount() {
     let dataList = [];
-    // const ofelId = ""+this.props.ofelId
-    
-    fetch('https://ofel.ai/node/intent/list',{headers: {'ofelId': '222'}})
-      .then((data) => data.json())
-      .then((res) => res.data.map(qaItem => {
+    // console.log(this.props.ofelId)
+    axios.get('https://ofel.ai/node/intent/list',{headers: {'ofelId': '888'}})
+      .then((res) => res.data.data.map(qaItem => {
         dataList.push(<Item 
                         key={qaItem.id}
                         deleteItem={this.deleteItem}
-                        keyId={qaItem.id}/>)
+                        keyId={qaItem.id}
+                        uuid={qaItem.uuid}
+                        enable={qaItem.enable}
+                        keywords={qaItem.keywords}
+                        replys={qaItem.replys}
+                        isCreated={true}/>)
       }))
       .then(() => this.setState(() => ({
         itemList: dataList
       })))
-      .then(() => console.log(this.props.ofelId))
+      // .then(() => console.log(this.props.ofelId))
     }
 
   addItem() {
@@ -43,6 +53,7 @@ export default class Body extends Component {
       />
     )
     this.setState({itemList: items})
+    
   }
 
   deleteItem(i) {

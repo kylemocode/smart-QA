@@ -106,6 +106,16 @@
     font-weight: bold;
 }
 
+.update_btn {
+  width: 45px;
+  height: 30px;
+  background-color: #1982D8;
+  border-radius: 4px;
+  border: none;
+  color: white;
+  font-size: 12px;
+}
+
 .item_input {
   /* display: flex;
   justify-content: space-between; */
