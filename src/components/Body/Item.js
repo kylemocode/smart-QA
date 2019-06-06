@@ -26,14 +26,42 @@ export default class Item extends Component {
     }
 
     componentDidMount() {
-       
-       setTimeout(() => {
-        this.setState(() => ({
-            isOpen: this.props.enable,
-            keywordList: this.props.keywords
-        }))
-        console.log(this.state.keywordList)
-       },0)
+        let keywords = this.props.keywords
+        keywords = keywords.replace(/'/g, '"');
+        keywords = JSON.parse(keywords);
+        console.log(keywords)
+            // const keywords = this.state.keywordList ? this.state.keywordList : []
+            // const index = keywords.findIndex((keyword) => keyword.key == keywords.length)
+            
+            // const keywordsFromProps = this.props.keywords ? this.props.keywords:[];
+            // console.log(keywordsFromProps)
+
+            // Array.prototype.map.call(keywordsFromProps, keyword => {
+            //     keywords.push(<KeyWord 
+            //         keyword={keyword}
+            //         delKeyword={this.delKeyword}
+            //         key={index <0 ? keywords.length : `${keywords.length}${index}`}
+            //         keyId={index <0 ? keywords.length : `${keywords.length}${index}`}
+            //     />)
+            //     console.log(keyword)
+            //   });
+            // const keyList = keywordsFromProps.map((keyword) => {
+            //     return <KeyWord 
+            //         keyword={keyword}
+            //         delKeyword={this.delKeyword}
+            //         key={index <0 ? keywords.length : `${keywords.length}${index}`}
+            //         keyId={index <0 ? keywords.length : `${keywords.length}${index}`}
+            //     />
+            // })
+            setTimeout(() => {
+                this.setState(() => ({
+                    isOpen: this.props.enable,
+                    keywordList: keywords
+                }))
+            },0)
+            
+      
+        
     }
 
     handleSelectChange = (e) => {
@@ -163,7 +191,7 @@ export default class Item extends Component {
    }
 
     render() {
-        
+
         return (
             <div
                 className="container item_container_flex rwd_constainer"
@@ -201,8 +229,14 @@ export default class Item extends Component {
                                     <span className="item_warning">{this.state.textCount>50?"※超過字數限制":""}</span>
                                 </div>
                                 <div style={{display:"flex",marginTop: "8px",flexWrap: "wrap"}}>
-                                    {this.state.keywordList}
-                                    
+                                    {this.state.keywordList.map((keyword) => {
+                                        return <KeyWord 
+                                        keyword={keyword}
+                                        delKeyword={this.delKeyword}
+                                        key={`${this.state.keywordList.length}${this.props.keyId}`}
+                                        keyId={`${this.state.keywordList.length}${this.props.keyId}`}
+                                    />
+                                    })}
                                 </div>
                             </div>
                             <div className="col-md-6 col-sm-12 rwd_marginTop">
@@ -257,7 +291,6 @@ export default class Item extends Component {
                         <i class="fas fa-trash-alt"></i>
                     </button>
                 </div>
-                
         </div>
         )
     }
