@@ -4,13 +4,22 @@ class Text extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      textCount: 0
+      textCount: 0,
+      content: ""
     }
+
+  }
+
+  componentDidMount(){
+    this.setState({
+      content: this.props.text
+    })
   }
 
   handleChange = (e) => {
     this.setState({
-      textCount: e.target.value.length
+      textCount: e.target.value.length,
+      content: e.target.value
     })
   }
 
@@ -47,7 +56,7 @@ class Text extends React.Component {
                 <p><img src="https://s3-ap-northeast-1.amazonaws.com/www.memepr.com/smartQA/path_513.png" style={{width:'12px',height: '12px',marginRight: '7px',color: 'white',marginBottom: '1px'}}></img>純文字訊息</p>
             </div>
             <div>
-                <textarea placeholder="請輸入文字訊息" style={textareaStyle} onChange={this.handleChange}>
+                <textarea placeholder="請輸入文字訊息" style={textareaStyle} onChange={this.handleChange} value={this.state.content}>
                 </textarea>
                 <span style={textCountStyle}>{this.state.textCount}/75</span>
             </div>

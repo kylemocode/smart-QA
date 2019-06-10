@@ -19,7 +19,9 @@ export default class Item extends Component {
             keywordList: [],
             selectedValue: '',
             optionsList: [],
-            created: false
+            created: false,
+            replys: [],
+            keywordTextArray: [],
         }
 
         
@@ -27,41 +29,66 @@ export default class Item extends Component {
 
     componentDidMount() {
         let keywords = this.props.keywords
-        keywords = keywords.replace(/'/g, '"');
-        keywords = JSON.parse(keywords);
+        let keywordTextArray = []
+        if(keywords!==''){
+            keywords = keywords.replace(/'/g, '"');
+            keywords = JSON.parse(keywords);
+            keywordTextArray = keywords
+            keywords = keywords.map((keyword) => {
+                return <KeyWord 
+                keyword={keyword}
+                delKeyword={this.delKeyword}
+                key={`${this.state.keywordList.length}${this.props.keyId}`}
+                keyId={`${this.state.keywordList.length}${this.props.keyId}`}
+            />
+            })
+        }
+       
         console.log(keywords)
-            // const keywords = this.state.keywordList ? this.state.keywordList : []
-            // const index = keywords.findIndex((keyword) => keyword.key == keywords.length)
+        
+        //options
+        const options = this.state.optionsList
+        const replysArray = this.state.replys
+        console.log(this.props.replys)
+        if(this.props.replys){
+            this.props.replys.map((reply) => {
+                if(reply.type == 'text'){
+                    options.push(<Text
+                        key={`${options.length}${this.props.keyId}`}
+                        keyId={`${options.length}${this.props.keyId}`}
+                        delOption={this.delOption}
+                        text={reply.content}
+          />)
+                replysArray.push({type: "text",content: reply.content,remark: ""})
+                }else if(reply.type == 'image'){
+                    options.push(<Image
+                        key={`${options.length}${this.props.keyId}`}
+                        keyId={`${options.length}${this.props.keyId}`}
+                        delOption={this.delOption}
+          />)
+                    replysArray.push({type: "image",content: reply.content})
+                }else if(reply.type == "url"){
+                    options.push(<Link
+                        key={`${options.length}${this.props.keyId}`}
+                        keyId={`${options.length}${this.props.keyId}`}
+                        delOption={this.delOption}
+          />)
+                    replysArray.push({type: "url",content: reply.content,remark: ""})
+                }
+            })
+        }
             
-            // const keywordsFromProps = this.props.keywords ? this.props.keywords:[];
-            // console.log(keywordsFromProps)
-
-            // Array.prototype.map.call(keywordsFromProps, keyword => {
-            //     keywords.push(<KeyWord 
-            //         keyword={keyword}
-            //         delKeyword={this.delKeyword}
-            //         key={index <0 ? keywords.length : `${keywords.length}${index}`}
-            //         keyId={index <0 ? keywords.length : `${keywords.length}${index}`}
-            //     />)
-            //     console.log(keyword)
-            //   });
-            // const keyList = keywordsFromProps.map((keyword) => {
-            //     return <KeyWord 
-            //         keyword={keyword}
-            //         delKeyword={this.delKeyword}
-            //         key={index <0 ? keywords.length : `${keywords.length}${index}`}
-            //         keyId={index <0 ? keywords.length : `${keywords.length}${index}`}
-            //     />
-            // })
             setTimeout(() => {
                 this.setState(() => ({
                     isOpen: this.props.enable,
-                    keywordList: keywords
+                    keywordList: keywords,
+                    optionsList: options,
+                    keywordTextArray: keywordTextArray
                 }))
             },0)
             
       
-        
+        // console.log(keywordTextArray)
     }
 
     handleSelectChange = (e) => {
@@ -92,6 +119,8 @@ export default class Item extends Component {
     onKeywordSubmit = (text) => {
         const keywords = this.state.keywordList ? this.state.keywordList : []
         const index = keywords.findIndex((keyword) => keyword.key == keywords.length)
+        const keywordArray = this.state.keywordTextArray
+        keywordArray.push(text)
         keywords.push(
             <KeyWord 
                 keyword={text}
@@ -102,17 +131,23 @@ export default class Item extends Component {
         )
         this.setState({
             keywordList: keywords,
-            textCount: 0
+            textCount: 0,
+            keywordTextArray: keywordArray
         })
         
     }
 
-    delKeyword = (i) => {
+    delKeyword = (i,text) => {
         const keywords = this.state.keywordList;
         const index = keywords.findIndex((data) => data.props.keyId == i);
         keywords.splice(index,1);
-        this.setState({itemList: keywords});
 
+        let keywordArray = this.state.keywordTextArray;
+        let keywordArrayFiltered = keywordArray.filter((keyword) => {
+            return keyword !== text
+        })
+
+        this.setState({keywordList: keywords,keywordTextArray: keywordArrayFiltered});
     }
 
    addOption = () => {
@@ -170,13 +205,13 @@ export default class Item extends Component {
 
    saveqa = () => {
         if(!this.props.isCreated) {
-            axios({ method: 'POST', url: 'https://ofel.ai/node/intent/create', headers: {'ofelId': '888'}, data: {
-                "intents":[
+            axios({ method: 'POST', url: 'https://ofel.ai/node/intent/create', headers: {ofelId: '888'}, data: {
+                intents:[
                     {
-                      "enable": true,
-                      "keywords": ["oldmo","test"],
-                      "replys": [
-                        { "type": "text", "content": "你好有什麼幫到你?" }
+                      enable: true,
+                      keywords: this.state.keywordTextArray,
+                      replys: [
+                        { type: "text", "content": "你好有什麼幫到你?" }
                       ]
                     }
                 ]
@@ -184,8 +219,25 @@ export default class Item extends Component {
                 .then(() => this.setState({
                     created: true
                 }))
+                .then(() => alert('對話建立成功'))
+                .catch(() => alert('請輸入完整內容'))
         }else{
             //update api
+            axios({ method: 'POST', url: 'https://ofel.ai/node/intent/update', headers: {ofelId: '888'}, data: {
+                intents: [
+                    
+                    {
+                      uuid: this.props.uuid,
+                      enable: this.state.isOpen,
+                      keywords: this.state.keywordTextArray,
+                      replys: [
+                        { type: 'text', content: 'Update Reply1' ,remark: ''},
+                        { type: 'text', content: 'Update Reply2' ,remark: ''},
+                      ],
+                    }
+                ]
+                } })
+                .then(() => alert('儲存成功'))
         }
 
    }
@@ -203,7 +255,9 @@ export default class Item extends Component {
                 <div  className="rwd_itemcontainer">
                     <div>
                         <div className="item_title" style={{ backgroundColor: this.state.isOpen ? '#1982D8' : '#E0E0E0', transition: '0.3s' }}>
-                            <p>按此編輯對話名稱</p>
+                            <p>{this.state.keywordTextArray.slice(0,2).map((text) => {
+                                return text+ ' '
+                            })}</p>
                             
                             <div style={{ backgroundColor: this.state.isOpen ? '#106fbc' : '#D5D5D5', transition: '0.3s' }} onClick={this.handleReveal}>{this.state.isReveal ? <i class="fas fa-chevron-up"></i> : <i class="fas fa-chevron-down"></i>}</div>
                         </div>
@@ -229,14 +283,7 @@ export default class Item extends Component {
                                     <span className="item_warning">{this.state.textCount>50?"※超過字數限制":""}</span>
                                 </div>
                                 <div style={{display:"flex",marginTop: "8px",flexWrap: "wrap"}}>
-                                    {this.state.keywordList.map((keyword) => {
-                                        return <KeyWord 
-                                        keyword={keyword}
-                                        delKeyword={this.delKeyword}
-                                        key={`${this.state.keywordList.length}${this.props.keyId}`}
-                                        keyId={`${this.state.keywordList.length}${this.props.keyId}`}
-                                    />
-                                    })}
+                                    {this.state.keywordList}
                                 </div>
                             </div>
                             <div className="col-md-6 col-sm-12 rwd_marginTop">
@@ -276,15 +323,17 @@ export default class Item extends Component {
                         className="cleanup_btn"
                         onClick={
                             () => {
-                                setTimeout(() => this.props.deleteItem(this.props.keyId) , 700)
-                                this.setState({ del: true })
-                                axios({ method: 'POST', url: 'https://ofel.ai/node/intent/delete', headers: {'ofelId': '888'}, data: {
-                                    "intents":[
-                                        {
-                                         "uuid": this.props.uuid
-                                        }
-                                    ]
-                                    } })
+                                if(window.confirm('確認要刪除?')){
+                                    setTimeout(() => this.props.deleteItem(this.props.keyId) , 700)
+                                    this.setState({ del: true })
+                                    axios({ method: 'POST', url: 'https://ofel.ai/node/intent/delete', headers: {'ofelId': '888'}, data: {
+                                        "intents":[
+                                            {
+                                            "uuid": this.props.uuid
+                                            }
+                                        ]
+                                        } })
+                                    }
                             }
                         }
                     >

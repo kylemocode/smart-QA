@@ -34,7 +34,8 @@ export default class Body extends Component {
                         enable={qaItem.enable}
                         keywords={qaItem.keywords}
                         replys={qaItem.replys}
-                        isCreated={true}/>)
+                        isCreated={true}
+                        ofelId={this.props.ofelId}/>)
       }))
       .then(() => this.setState(() => ({
         itemList: dataList
@@ -50,6 +51,7 @@ export default class Body extends Component {
         key={index <0 ? items.length : `${items.length}${index}`}
         deleteItem={this.deleteItem}
         keyId={index <0 ? items.length : `${items.length}${index}`}
+        keywords=""
       />
     )
     this.setState({itemList: items})

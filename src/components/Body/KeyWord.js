@@ -24,7 +24,7 @@ const KeyWord = (props) => {
   }
   return (
     <div className="item_keyword">
-      <button style={crossStyle} onClick={() => props.delKeyword(props.keyId)}>x</button>
+      <button style={crossStyle} onClick={() => props.delKeyword(props.keyId,props.keyword)}>x</button>
       <div style={keywordStyle}>{props.keyword}</div>
     </div>
   )
