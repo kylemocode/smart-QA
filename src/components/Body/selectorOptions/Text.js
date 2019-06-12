@@ -6,7 +6,13 @@ class Text extends React.Component {
     this.state = {
       textCount: 0,
       content: ""
+      // reply: {
+      //   type: "text",
+      //   content: "",
+      //   remark: ""
+      // }
     }
+    
 
   }
 
@@ -21,6 +27,7 @@ class Text extends React.Component {
       textCount: e.target.value.length,
       content: e.target.value
     })
+    this.props.getValue(e.target.value,this.props.keyId)
   }
 
   render() {

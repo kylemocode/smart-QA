@@ -22,8 +22,9 @@ export default class Item extends Component {
             created: false,
             replys: [],
             keywordTextArray: [],
+            textValue: []
         }
-
+        
         
     }
 
@@ -44,20 +45,24 @@ export default class Item extends Component {
             })
         }
        
-        console.log(keywords)
+        
         
         //options
         const options = this.state.optionsList
         const replysArray = this.state.replys
-        console.log(this.props.replys)
+        
         if(this.props.replys){
-            this.props.replys.map((reply) => {
+            this.props.replys.map((reply,i) => {
                 if(reply.type == 'text'){
                     options.push(<Text
                         key={`${options.length}${this.props.keyId}`}
                         keyId={`${options.length}${this.props.keyId}`}
                         delOption={this.delOption}
                         text={reply.content}
+                        type="text"
+                        getValue={this.getValue}
+                        
+                        
           />)
                 replysArray.push({type: "text",content: reply.content,remark: ""})
                 }else if(reply.type == 'image'){
@@ -65,13 +70,17 @@ export default class Item extends Component {
                         key={`${options.length}${this.props.keyId}`}
                         keyId={`${options.length}${this.props.keyId}`}
                         delOption={this.delOption}
+                        type="img"
+                        getValue={this.getValue}
           />)
-                    replysArray.push({type: "image",content: reply.content})
+                    replysArray.push({type: "image",content: reply.content,remark: ""})
                 }else if(reply.type == "url"){
                     options.push(<Link
                         key={`${options.length}${this.props.keyId}`}
                         keyId={`${options.length}${this.props.keyId}`}
                         delOption={this.delOption}
+                        type="url"
+                        getValue={this.getValue}
           />)
                     replysArray.push({type: "url",content: reply.content,remark: ""})
                 }
@@ -83,11 +92,12 @@ export default class Item extends Component {
                     isOpen: this.props.enable,
                     keywordList: keywords,
                     optionsList: options,
-                    keywordTextArray: keywordTextArray
+                    keywordTextArray: keywordTextArray,
+                    replys: replysArray
                 }))
             },0)
             
-      
+            
         // console.log(keywordTextArray)
     }
 
@@ -151,6 +161,7 @@ export default class Item extends Component {
     }
 
    addOption = () => {
+    
     const items = this.state.optionsList
     const index = items.findIndex((data) => data.key == items.length);
     switch(this.state.selectedValue){
@@ -160,12 +171,16 @@ export default class Item extends Component {
                     key={index <0 ? items.length : `${items.length}${index}`}
                     keyId={index <0 ? items.length : `${items.length}${index}`}
                     delOption={this.delOption}
+                    type="text"
+                    getValue={this.getValue}
       />
             )
+            
             this.setState({
                 optionsList: items
+               
             })
-            console.log(this.state.optionsList)
+            
             break;
         case("image"):
             items.push(
@@ -173,10 +188,14 @@ export default class Item extends Component {
                     key={index <0 ? items.length : `${items.length}${index}`}
                     keyId={index <0 ? items.length : `${items.length}${index}`}
                     delOption={this.delOption}
+                    type="img"
+                    getValue={this.getValue}
     />
             )
+            
             this.setState({
-                optionsList: items
+                optionsList: items,
+                
             })
             break;
         case("link"):
@@ -185,10 +204,14 @@ export default class Item extends Component {
                     key={index <0 ? items.length : `${items.length}${index}`}
                     keyId={index <0 ? items.length : `${items.length}${index}`}
                     delOption={this.delOption}
+                    type="url"
+                    getValue={this.getValue}
     />
             )
+            
             this.setState({
-                optionsList: items
+                optionsList: items,
+                
             })
             break;
         default:
@@ -203,16 +226,36 @@ export default class Item extends Component {
     this.setState({optionsList: newOptions});
    }
 
+   getValue = (value,i) => {
+       let textValueArray = this.state.textValue;
+       textValueArray[i] = value
+       this.setState({
+           textValue: textValueArray
+       })
+   }
+
    saveqa = () => {
+       let replyarray = []
+       replyarray =  this.state.optionsList.map((option) => {
+            if(option.props.type==='text'){
+                return {type: 'text',content: this.state.textValue[option.props.keyId],remark:''}
+            }else if(option.props.type==='url'){
+                return {type: 'url',content: '',remark:''}
+            }else if(option.props.type==='img'){
+
+            }
+       })
+
+       //待完成 嘗試getValue方法
+
+       console.log(replyarray)
         if(!this.props.isCreated) {
             axios({ method: 'POST', url: 'https://ofel.ai/node/intent/create', headers: {ofelId: '888'}, data: {
                 intents:[
                     {
                       enable: true,
                       keywords: this.state.keywordTextArray,
-                      replys: [
-                        { type: "text", "content": "你好有什麼幫到你?" }
-                      ]
+                      replys: replyarray
                     }
                 ]
                 } })
@@ -230,10 +273,7 @@ export default class Item extends Component {
                       uuid: this.props.uuid,
                       enable: this.state.isOpen,
                       keywords: this.state.keywordTextArray,
-                      replys: [
-                        { type: 'text', content: 'Update Reply1' ,remark: ''},
-                        { type: 'text', content: 'Update Reply2' ,remark: ''},
-                      ],
+                      replys: replyarray,
                     }
                 ]
                 } })
