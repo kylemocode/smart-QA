@@ -22,13 +22,16 @@ export default class Item extends Component {
             created: false,
             replys: [],
             keywordTextArray: [],
-            textValue: []
+            textValue: [],
+            urlValue: [],
+            urlRemark: []
         }
         
         
     }
 
     componentDidMount() {
+        
         let keywords = this.props.keywords
         let keywordTextArray = []
         if(keywords!==''){
@@ -36,7 +39,8 @@ export default class Item extends Component {
             keywords = JSON.parse(keywords);
             keywordTextArray = keywords
             keywords = keywords.map((keyword) => {
-                return <KeyWord 
+                
+                return <KeyWord  
                 keyword={keyword}
                 delKeyword={this.delKeyword}
                 key={`${this.state.keywordList.length}${this.props.keyId}`}
@@ -44,13 +48,15 @@ export default class Item extends Component {
             />
             })
         }
-       
+        
         
         
         //options
         const options = this.state.optionsList
         const replysArray = this.state.replys
-        
+        const textContent = this.state.textValue
+        const urlValue = this.state.urlValue
+        const urlRemark = this.state.urlRemark
         if(this.props.replys){
             this.props.replys.map((reply,i) => {
                 if(reply.type == 'text'){
@@ -65,6 +71,7 @@ export default class Item extends Component {
                         
           />)
                 replysArray.push({type: "text",content: reply.content,remark: ""})
+                textContent[`${options.length}${this.props.keyId}`] =  reply.content
                 }else if(reply.type == 'image'){
                     options.push(<Image
                         key={`${options.length}${this.props.keyId}`}
@@ -80,21 +87,32 @@ export default class Item extends Component {
                         keyId={`${options.length}${this.props.keyId}`}
                         delOption={this.delOption}
                         type="url"
-                        getValue={this.getValue}
+                        getUrlContent={this.getUrlContent}
+                        getUrlRemark={this.getUrlRemark}
+                        url={reply.content}
+                        remark={reply.remark}
           />)
                     replysArray.push({type: "url",content: reply.content,remark: ""})
+                    urlValue[`${options.length}${this.props.keyId}`] =  reply.content
+                    urlRemark[`${options.length}${this.props.keyId}`] =  reply.remark
                 }
             })
         }
             
+
+
             setTimeout(() => {
                 this.setState(() => ({
                     isOpen: this.props.enable,
                     keywordList: keywords,
                     optionsList: options,
                     keywordTextArray: keywordTextArray,
-                    replys: replysArray
+                    replys: replysArray,
+                    textValue: textContent,
+                    urlValue,
+                    urlRemark
                 }))
+                console.log(this.state.urlRemark)
             },0)
             
             
@@ -205,7 +223,9 @@ export default class Item extends Component {
                     keyId={index <0 ? items.length : `${items.length}${index}`}
                     delOption={this.delOption}
                     type="url"
-                    getValue={this.getValue}
+                    getUrlContent={this.getUrlContent}
+                    getUrlRemark={this.getUrlRemark}
+
     />
             )
             
@@ -234,26 +254,48 @@ export default class Item extends Component {
        })
    }
 
+   getUrlContent = (url,i) => {
+    let urlValueArray = this.state.urlValue;
+    urlValueArray[i] = url
+    this.setState({
+        urlValue: urlValueArray
+    })
+}
+
+    getUrlRemark= (remark,i) => {
+        let urlRemark = this.state.urlRemark;
+        urlRemark[i] = remark
+        this.setState({
+            urlRemark: urlRemark
+        })
+    }
+
    saveqa = () => {
        let replyarray = []
        replyarray =  this.state.optionsList.map((option) => {
             if(option.props.type==='text'){
-                return {type: 'text',content: this.state.textValue[option.props.keyId],remark:''}
+                console.log(option.props.keyId)
+                return {type: 'text',content: this.state.textValue[option.props.keyId]}
             }else if(option.props.type==='url'){
-                return {type: 'url',content: '',remark:''}
+                return {type: 'url',content: this.state.urlValue[option.props.keyId],remark:this.state.urlRemark[option.props.keyId]}
             }else if(option.props.type==='img'){
 
             }
        })
 
-       //待完成 嘗試getValue方法
-
+       
        console.log(replyarray)
+       console.log(this.state.isOpen)
+       console.log(this.props.uuid)
+       console.log(this.state.keywordTextArray)
+       console.log(this.state.urlValue)
+       console.log(this.state.textValue)
+       
         if(!this.props.isCreated) {
             axios({ method: 'POST', url: 'https://ofel.ai/node/intent/create', headers: {ofelId: '888'}, data: {
                 intents:[
                     {
-                      enable: true,
+                      enable: this.state.isOpen?this.state.isOpen:false,
                       keywords: this.state.keywordTextArray,
                       replys: replyarray
                     }
