@@ -57,6 +57,8 @@ export default class Item extends Component {
         const textContent = this.state.textValue
         const urlValue = this.state.urlValue
         const urlRemark = this.state.urlRemark
+
+        const index = this.props.replys.findIndex((data) => data.ord == this.props.replys.length);
         if(this.props.replys){
             this.props.replys.map((reply,i) => {
                 if(reply.type == 'text'){
