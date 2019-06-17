@@ -6,17 +6,10 @@ class Text extends React.Component {
     this.state = {
       textCount: 0,
       content: ""
-      // reply: {
-      //   type: "text",
-      //   content: "",
-      //   remark: ""
-      // }
     }
-    
-
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.setState({
       content: this.props.text
     })
@@ -27,7 +20,7 @@ class Text extends React.Component {
       textCount: e.target.value.length,
       content: e.target.value
     })
-    this.props.getValue(e.target.value,this.props.keyId)
+    this.props.getValue(e.target.value, this.props.keyId)
   }
 
   render() {
@@ -58,24 +51,24 @@ class Text extends React.Component {
 
     return (
       <div className="optionStyle">
-        <div style={{position: "relative",width:'100%'}}>
-            <div style={headerStyle}>
-                <p><img src="https://s3-ap-northeast-1.amazonaws.com/www.memepr.com/smartQA/path_513.png" style={{width:'12px',height: '12px',marginRight: '7px',color: 'white',marginBottom: '1px'}}></img>純文字訊息</p>
-            </div>
-            <div>
-                <textarea placeholder="請輸入文字訊息" style={textareaStyle} onChange={this.handleChange} value={this.state.content}>
-                </textarea>
-                <span style={textCountStyle}>{this.state.textCount}/75</span>
-            </div>
+        <div style={{ position: "relative", width: '100%' }}>
+          <div style={headerStyle}>
+            <p><img src="https://s3-ap-northeast-1.amazonaws.com/www.memepr.com/smartQA/path_513.png" style={{ width: '12px', height: '12px', marginRight: '7px', color: 'white', marginBottom: '1px' }}></img>純文字訊息</p>
+          </div>
+          <div>
+            <textarea placeholder="請輸入文字訊息" style={textareaStyle} onChange={this.handleChange} value={this.state.content}>
+            </textarea>
+            <span style={textCountStyle}>{this.state.textCount}/75</span>
+          </div>
         </div>
 
         <div className="rwd_cleanup_btn">
-            <button
+          <button
             className="cleanup_btn"
-            style={{marginLeft: "15px",marginTop: "-1px"}}
+            style={{ marginLeft: "15px", marginTop: "-1px" }}
             onClick={() => this.props.delOption(this.props.keyId)}>
             <i class="fas fa-trash-alt"></i>
-            </button>
+          </button>
         </div>
       </div>
     )
