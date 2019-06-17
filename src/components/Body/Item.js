@@ -6,6 +6,7 @@ import Text from './selectorOptions/Text';
 import Link from './selectorOptions/Link';
 import Image from './selectorOptions/Image';
 import axios from 'axios';
+import { intentCreate,intentUpdate,intentDelete } from '../../apiurl'
 
 export default class Item extends Component {
     constructor(props) {
@@ -281,7 +282,7 @@ export default class Item extends Component {
 
         if (!this.props.isCreated) {
             axios({
-                method: 'POST', url: 'https://ofel.ai/node/intent/create', headers: { ofelId: '888' }, data: {
+                method: 'POST', url: intentCreate, headers: { ofelId: '888' }, data: {
                     intents: [
                         {
                             enable: this.state.isOpen ? this.state.isOpen : false,
@@ -299,7 +300,7 @@ export default class Item extends Component {
         } else {
             //update api
             axios({
-                method: 'POST', url: 'https://ofel.ai/node/intent/update', headers: { ofelId: '888' }, data: {
+                method: 'POST', url: intentUpdate, headers: { ofelId: '888' }, data: {
                     intents: [
 
                         {
@@ -401,7 +402,7 @@ export default class Item extends Component {
                                     setTimeout(() => this.props.deleteItem(this.props.keyId), 700)
                                     this.setState({ del: true })
                                     axios({
-                                        method: 'POST', url: 'https://ofel.ai/node/intent/delete', headers: { 'ofelId': '888' }, data: {
+                                        method: 'POST', url: intentDelete, headers: { 'ofelId': '888' }, data: {
                                             "intents": [
                                                 {
                                                     "uuid": this.props.uuid
