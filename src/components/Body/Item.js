@@ -24,7 +24,9 @@ export default class Item extends Component {
             keywordTextArray: [],
             textValue: [],
             urlValue: [],
-            urlRemark: []
+            urlRemark: [],
+            delItem: false,
+            revealButton:false,
         }
 
 
@@ -323,6 +325,12 @@ export default class Item extends Component {
                     transform: this.state.del ? 'translateX(250px)' : 'translateX(0px)',
                     opacity: this.state.del ? 0 : 1
                 }}
+                onMouseOver={() => {
+                    this.setState({ delItem: true })
+                }}
+                onMouseOut={() => {
+                    this.setState({ delItem: false })
+                }}
             >
                 <div className="rwd_itemcontainer">
                     <div>
@@ -331,7 +339,16 @@ export default class Item extends Component {
                                 return text + ' '
                             })}</p>
 
-                            <div style={{ backgroundColor: this.state.isOpen ? '#106fbc' : '#D5D5D5', transition: '0.3s' }} onClick={this.handleReveal}>{this.state.isReveal ? <i class="fas fa-chevron-up"></i> : <i class="fas fa-chevron-down"></i>}</div>
+                            <div
+                                style={{
+                                    backgroundColor:this.state.isOpen ? this.state.revealButton ? '#106fbc' : '#1982D8' : this.state.revealButton ? '#D5D5D5' : '#E0E0E0',
+                                    transition: '0.3s'
+                                }}
+                                onMouseOver={() => this.setState({revealButton: true})}
+                                onMouseOut={() => this.setState({revealButton: false})}
+                                onClick={this.handleReveal}
+                            >
+                                {this.state.isReveal ? <i class="fas fa-chevron-up"></i> : <i class="fas fa-chevron-down"></i>}</div>
                         </div>
                         {this.state.isReveal ? <div className="container item_input" style={{ opacity: this.state.isReveal ? 1 : 0 }}>
                             <div className="row">
@@ -382,15 +399,30 @@ export default class Item extends Component {
                         <hr style={{ margin: "0" }} />
                         <div className="item_status">
                             <div style={{ display: "flex", alignItems: 'center' }}>
-                                <p style={{ fontSize: "14px" }} style={{ marginRight: '20px', marginTop: '5px' }}>智能對話狀態: {this.state.isOpen ? '開啟' : '關閉'}</p>
                                 <ToggleButton handleOpen={this.handleOpen} isOpen={this.state.isOpen} />
+                                <p style={{ fontSize: "14px" }} style={{ marginRight: '20px', marginTop: '5px' }}>智能對話狀態</p>
                             </div>
-                            <button className="update_btn" style={{ marginTop: '3px' }} onClick={this.saveqa}>{this.props.isCreated || this.state.created ? "儲存" : "建立"}</button>
+                            <button
+                                className="update_btn"
+                                style={{
+                                    marginTop: '3px'
+                                }}
+                                onClick={this.saveqa}
+                            >
+                                {this.props.isCreated || this.state.created ? "儲存" : "建立"}
+                            </button>
 
                         </div>
                     </div>
                 </div>
-                <div className="rwd_delbtn">
+                <div
+                    className="rwd_delbtn"
+                    style={{
+                        visibility: this.state.delItem ? 'visible' : 'hidden',
+                        opacity: this.state.delItem ? 1 : 0,
+                        transition: ' 0.5s '
+                    }}
+                >
                     <button
                         className="cleanup_btn"
                         onClick={
