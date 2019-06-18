@@ -10,7 +10,7 @@
 }
 
 .cleanup_btn {
-    background-color: #C32020;
+    background-color: #E22424;
     width: 40px;
     height: 40px;
     border: none;
@@ -21,6 +21,10 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    transition: 0.2s;
+}
+.cleanup_btn:hover {
+  background-color: #C32020;
 }
 
 .item_title {
@@ -107,13 +111,18 @@
 }
 
 .update_btn {
-  width: 45px;
-  height: 30px;
-  background-color: #1982D8;
+  padding:8.5px 15px;
+  background-color: #FFF;
   border-radius: 4px;
-  border: none;
-  color: white;
-  font-size: 12px;
+  border:1px solid #1982D8;
+  color: #1982D8;
+  font-size: 16px;
+  transition: 0.5s;
+}
+.update_btn:hover{
+  background-color: #1982D8;
+  border:1px solid #FFF;
+  color: #FFF;
 }
 
 .item_input {
@@ -253,7 +262,7 @@ select option {
   }
   
   input:checked + .slider {
-    background-color: #1982D8;
+    background-color: #2AD51F;
   }
   
   input:focus + .slider {
