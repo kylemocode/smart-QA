@@ -400,7 +400,7 @@ export default class Item extends Component {
                         <div className="item_status">
                             <div style={{ display: "flex", alignItems: 'center' }}>
                                 <ToggleButton handleOpen={this.handleOpen} isOpen={this.state.isOpen} />
-                                <p style={{ fontSize: "14px" }} style={{ marginRight: '20px', marginTop: '5px' }}>智能對話狀態</p>
+                                <p style={{ fontSize: "14px" }} style={{ marginRight: '20px', marginTop: '5px',opacity:0.7 }}>智能對話狀態</p>
                             </div>
                             <button
                                 className="update_btn"
