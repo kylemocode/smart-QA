@@ -28,6 +28,9 @@ export default class Item extends Component {
             urlRemark: [],
             delItem: false,
             revealButton:false,
+            isSaving: false,
+            isCreating: false,
+            isErroring: false
         }
 
 
@@ -72,6 +75,7 @@ export default class Item extends Component {
                         text={reply.content}
                         type="text"
                         getValue={this.getValue}
+                        isErroring={this.state.isErroring}
                     />)
                     replysArray.push({ type: "text", content: reply.content, remark: "" })
                     textContent[`${options.length}${this.props.keyId}`] = reply.content
@@ -82,6 +86,7 @@ export default class Item extends Component {
                         delOption={this.delOption}
                         type="img"
                         getValue={this.getValue}
+                        isErroring={this.state.isErroring}
                     />)
                     replysArray.push({ type: "image", content: reply.content, remark: "" })
                 } else if (reply.type == "url") {
@@ -94,6 +99,7 @@ export default class Item extends Component {
                         getUrlRemark={this.getUrlRemark}
                         url={reply.content}
                         remark={reply.remark}
+                        isErroring={this.state.isErroring}
                     />)
                     replysArray.push({ type: "url", content: reply.content, remark: "" })
                     urlValue[`${options.length}${this.props.keyId}`] = reply.content
@@ -190,6 +196,7 @@ export default class Item extends Component {
                         delOption={this.delOption}
                         type="text"
                         getValue={this.getValue}
+                        isErroring={this.state.isErroring}
                     />
                 )
 
@@ -207,6 +214,7 @@ export default class Item extends Component {
                         delOption={this.delOption}
                         type="img"
                         getValue={this.getValue}
+                        isErroring={this.state.isErroring}
                     />
                 )
 
@@ -224,7 +232,7 @@ export default class Item extends Component {
                         type="url"
                         getUrlContent={this.getUrlContent}
                         getUrlRemark={this.getUrlRemark}
-
+                        isErroring={this.state.isErroring}
                     />
                 )
 
@@ -294,11 +302,24 @@ export default class Item extends Component {
                     ]
                 }
             })
+                .then(() => {
+                    if(this.state.isErroring === true){
+                        this.setState({
+                            isErroring: false
+                        })
+                    }else{
+                        return true
+                    }
+                })
                 .then(() => this.setState({
                     created: true
                 }))
-                .then(() => alert('對話建立成功'))
-                .catch(() => alert('請輸入完整內容'))
+                .then(() => this.setState({isCreating: true}))
+                .then(() => setTimeout(() => {
+                    this.setState({isCreating: false})
+                },2500))
+                .catch(() => this.setState({isErroring: true}))
+
         } else {
             //update api
             axios({
@@ -314,7 +335,20 @@ export default class Item extends Component {
                     ]
                 }
             })
-                .then(() => alert('儲存成功'))
+                // .then(() => alert('儲存成功'))
+                .then(() => {
+                    if(this.state.isErroring === true){
+                        this.setState({
+                            isErroring: false
+                        })
+                    }else{
+                        return true
+                    }
+                })
+                .then(() => this.setState({isSaving: true}))
+                .then(() => setTimeout(() => {
+                    this.setState({isSaving: false})
+                },2500))
         }
 
     }
@@ -355,21 +389,27 @@ export default class Item extends Component {
                         </div>
                         {this.state.isReveal ? <div className="container item_input" style={{ opacity: this.state.isReveal ? 1 : 0 }}>
                             <div className="row">
-                                <div className="col-md-6 col-sm-12">
+                                <div className="col-md-6 col-sm-12 ">
                                     <p className="rwd_content" style={{ fontSize: "14px" }}>當用戶輸入以下 相似 或 相同 關鍵字:</p>
-                                    <input
-                                        className="item_textarea rwd_content"
-                                        placeholder="新增關鍵字 (輸入enter區分關鍵字)"
-                                        onChange={this.onTextInput}
-                                        onKeyDown={(e) => {
-                                            if (e.keyCode == 13 && e.target.value !== '' && !e.target.value.includes('\n')) {
-                                                e.preventDefault();
-                                                this.onKeywordSubmit(e.target.value);
-                                                e.target.value = "";
-                                            }
-                                        }}
-                                    >
-                                    </input>
+                                    
+                                    <div className="tool">
+                                        <input
+                                            className="item_textarea rwd_content"
+                                            placeholder="新增關鍵字 (輸入enter區分關鍵字)"
+                                            onChange={this.onTextInput}
+                                            onKeyDown={(e) => {
+                                                if (e.keyCode == 13 && e.target.value !== '' && !e.target.value.includes('\n')) {
+                                                    e.preventDefault();
+                                                    this.onKeywordSubmit(e.target.value);
+                                                    e.target.value = "";
+                                                }
+                                            }}
+                                        >
+                                            
+                                        </input>
+                                        <span className="tooltiptext">輸入"enter"區分關鍵字</span>
+                                    </div>
+                                    
                                     <span className="item_textCount">{this.state.textCount}/50</span>
                                     <div>
                                         <span className="item_warning">{this.state.textCount > 50 ? "※超過字數限制" : ""}</span>
@@ -401,19 +441,26 @@ export default class Item extends Component {
                         </div> : ''}
                         <hr style={{ margin: "0" }} />
                         <div className="item_status">
-                            <div style={{ display: "flex", alignItems: 'center' }}>
+                            <div style={{ display: "flex", alignItems: 'center',justifyContent:"flex-end"}}>
                                 <ToggleButton handleOpen={this.handleOpen} isOpen={this.state.isOpen} />
                                 <p style={{ fontSize: "14px" }} style={{ marginRight: '20px', marginTop: '5px',opacity:0.7 }}>智能對話狀態</p>
+                                
                             </div>
-                            <button
-                                className="update_btn"
-                                style={{
-                                    marginTop: '3px'
-                                }}
-                                onClick={this.saveqa}
-                            >
+                            <div>
+                                {this.state.isSaving && <span style={{marginRight:"20px",fontSize:"14px"}}><img src="https://s3-ap-northeast-1.amazonaws.com/www.memepr.com/smartQA/icon_success.png " style={{ width: '14px', height: '14px', marginRight: '7px', color: 'white', marginBottom: '1px' }}></img>儲存成功!</span>}
+                                {this.state.isCreating && <span style={{marginRight:"20px",fontSize:"14px"}}><img src="https://s3-ap-northeast-1.amazonaws.com/www.memepr.com/smartQA/icon_success.png  " style={{ width: '14px', height: '14px', marginRight: '7px', color: 'white', marginBottom: '1px' }}></img>建立成功!</span>}
+                                {this.state.isErroring && <span style={{marginRight:"20px",fontSize:"14px"}}><img src="https://s3-ap-northeast-1.amazonaws.com/www.memepr.com/smartQA/icon_caution.png  " style={{ width: '14px', height: '14px', marginRight: '7px', color: 'white', marginBottom: '1px' }}></img>此對話模組尚未設計完成</span>}
+                                <button
+                                    className="update_btn"
+                                    style={{
+                                        marginTop: '3px'
+                                    }}
+                                    onClick={this.saveqa}
+                                >
                                 {this.props.isCreated || this.state.created ? "儲存" : "建立"}
-                            </button>
+                                </button>
+                            </div>
+                            
 
                         </div>
                     </div>
