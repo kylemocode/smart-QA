@@ -349,6 +349,7 @@ export default class Item extends Component {
                 .then(() => setTimeout(() => {
                     this.setState({isSaving: false})
                 },2500))
+                .catch(() => this.setState({isErroring: true}))
         }
 
     }
@@ -410,7 +411,7 @@ export default class Item extends Component {
                                         <span className="tooltiptext">輸入"enter"區分關鍵字</span>
                                     </div>
                                     
-                                    <span className="item_textCount">{this.state.textCount}/50</span>
+                                    
                                     <div>
                                         <span className="item_warning">{this.state.textCount > 50 ? "※超過字數限制" : ""}</span>
                                     </div>

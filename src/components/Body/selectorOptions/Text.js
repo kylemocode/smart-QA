@@ -5,7 +5,9 @@ class Text extends React.Component {
     super(props);
     this.state = {
       textCount: 0,
-      content: ""
+      content: "",
+      isFocus: false,
+      isFocusClick: false
     }
   }
 
@@ -21,6 +23,26 @@ class Text extends React.Component {
       content: e.target.value
     })
     this.props.getValue(e.target.value, this.props.keyId)
+  }
+
+  handleFocus = () => {
+    this.setState({
+      isFocus: true
+    })
+  }
+
+  handleFocusClick = () => {
+    this.setState({
+      isFocus: true,
+      isFocusClick: !this.state.isFocusClick
+    })
+  }
+
+  handleBlur = () => {
+    this.setState({
+      isFocus: false,
+      
+    })
   }
 
   render() {
@@ -49,26 +71,33 @@ class Text extends React.Component {
       color: '#CBCBCB'
     }
 
+    
+
     return (
       <div className="optionStyle">
-        <div style={{ position: "relative", width: '100%' }}>
+        <div style={{ position: "relative", width: '100%' }} className="option-container">
           <div style={headerStyle}>
             <p><img src="https://s3-ap-northeast-1.amazonaws.com/www.memepr.com/smartQA/path_513.png" style={{ width: '12px', height: '12px', marginRight: '7px', color: 'white', marginBottom: '1px' }}></img>純文字訊息</p>
           </div>
           <div>
-            <textarea placeholder="請輸入文字訊息" style={textareaStyle} onChange={this.handleChange} value={this.state.content}>
+            <textarea placeholder="請輸入文字訊息" style={textareaStyle} onChange={this.handleChange} value={this.state.content} onFocus={this.handleFocus} onBlur={this.handleBlur}>
             </textarea>
             <span style={textCountStyle}>{this.state.textCount}/75</span>
           </div>
         </div>
-
-        <div className="rwd_cleanup_btn">
-          <button
-            className="cleanup_btn"
-            style={{ marginLeft: "15px", marginTop: "-1px" }}
-            onClick={() => this.props.delOption(this.props.keyId)}>
-            <i class="fas fa-trash-alt"></i>
-          </button>
+        <div className="rwd_cleanup_btn inside_div" style={{opacity: this.state.isFocus? '1':'0'}}>
+            <button
+              className="cleanup_btn-inside"
+              style={{ marginLeft: "15px", marginTop: "-1px"}}
+              onClick={this.handleFocusClick}
+              >
+              <p className="inside_p">...</p>
+            </button>
+            
+        </div>
+        <div className="choose_btn" style={{opacity: this.state.isFocusClick? '1':'0'}}>
+            <div className="choose_btn_options" onClick={() => this.props.delOption(this.props.keyId)}>刪除</div>
+            <div className="choose_btn_options">複製</div>
         </div>
       </div>
     )

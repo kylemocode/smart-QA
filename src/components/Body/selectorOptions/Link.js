@@ -67,13 +67,12 @@ class Link extends React.Component {
                 <input placeholder="在此輸入文字註解" style={{height: '64px',fontSize:'12px',color:'#101010',border:'solid 1px #F0F0F0',padding: '16px'}} onChange={this.handleRemarkChange} value={this.state.remark}></input>
             </div>
         </div>
-  
-        <div className="rwd_cleanup_btn">
+        <div className="rwd_cleanup_btn inside_div">
             <button
-            className="cleanup_btn"
-            style={{marginLeft: "15px",marginTop: "-1px"}}
-            onClick={() => this.props.delOption(this.props.keyId)}>
-            <i class="fas fa-trash-alt"></i>
+              className="cleanup_btn-inside"
+              style={{ marginLeft: "15px", marginTop: "-1px"}}
+              onClick={() => this.props.delOption(this.props.keyId)}>
+              <p className="inside_p">...</p>
             </button>
         </div>
     </div>
