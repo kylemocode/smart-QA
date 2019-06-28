@@ -75,7 +75,7 @@ export default class Item extends Component {
                         text={reply.content}
                         type="text"
                         getValue={this.getValue}
-                        
+                        uuid={this.props.uuid}
                     />)
                     replysArray.push({ type: "text", content: reply.content, remark: "" })
                     textContent[`${options.length}${this.props.keyId}`] = reply.content
@@ -86,7 +86,7 @@ export default class Item extends Component {
                         delOption={this.delOption}
                         type="img"
                         getValue={this.getValue}
-                        
+                        uuid={this.props.uuid}
                     />)
                     replysArray.push({ type: "image", content: reply.content, remark: "" })
                 } else if (reply.type == "url") {
@@ -99,7 +99,7 @@ export default class Item extends Component {
                         getUrlRemark={this.getUrlRemark}
                         url={reply.content}
                         remark={reply.remark}
-                        
+                        uuid={this.props.uuid}
                     />)
                     replysArray.push({ type: "url", content: reply.content, remark: "" })
                     urlValue[`${options.length}${this.props.keyId}`] = reply.content
@@ -196,7 +196,7 @@ export default class Item extends Component {
                         delOption={this.delOption}
                         type="text"
                         getValue={this.getValue}
-                        
+                        uuid={this.props.uuid}
                     />
                 )
 
@@ -214,7 +214,7 @@ export default class Item extends Component {
                         delOption={this.delOption}
                         type="img"
                         getValue={this.getValue}
-                        
+                        uuid={this.props.uuid}
                     />
                 )
 
@@ -232,7 +232,7 @@ export default class Item extends Component {
                         type="url"
                         getUrlContent={this.getUrlContent}
                         getUrlRemark={this.getUrlRemark}
-                        
+                        uuid={this.props.uuid}
                     />
                 )
 
@@ -279,7 +279,12 @@ export default class Item extends Component {
 
     saveqa = () => {
         
-        document.getElementsByClassName('check-btn').click()
+        // let inputList = document.getElementsByClassName(`checkBtn-${this.props.uuid}`)
+        // console.log(inputList)
+        // for(let i=0;i<inputList.length;i++){
+        //     inputList[i].click()
+        // }
+
         let replyarray = []
         replyarray = this.state.optionsList.map((option) => {
             

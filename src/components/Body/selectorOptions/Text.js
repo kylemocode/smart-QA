@@ -48,12 +48,15 @@ class Text extends React.Component {
   }
 
   checkInput = () => {
+    console.log('fn triggered')
     var input = document.getElementsByTagName('textarea')[0];
-    if(input.value===''){
+    if(input.value==''){
+      
       this.setState({
         isEmpty: true
       })
     }else{
+      console.log(input.value)
       this.setState({
         isEmpty: false
       })
@@ -122,7 +125,7 @@ class Text extends React.Component {
               <i class="fas fa-trash-alt"></i>
             </button>
             
-            <button className="check-btn" style={{display: "none"}} onClick={this.checkInput}></button>
+            <button className={`checkBtn-${this.props.uuid}`} style={{display: "none"}} onClick={this.checkInput}></button>
         </div>
       </div>
     )
