@@ -58,7 +58,7 @@ class Link extends React.Component {
     }
   return (
       <div className="optionStyle">
-        <div style={{position: "relative",width:'100%',border: this.props.isErroring?'solid 2px #E22424':'solid 1px #F0F0F0'}}>
+        <div style={{position: "relative",width:'100%'}}>
             <div style={headerStyle}>
                 <p><img src="https://s3-ap-northeast-1.amazonaws.com/www.memepr.com/smartQA/icon_link.png" style={{width:'15px',height: '15px',marginRight: '7px'}}></img>超連結訊息</p>
             </div>
@@ -69,10 +69,10 @@ class Link extends React.Component {
         </div>
         <div className="rwd_cleanup_btn inside_div">
             <button
-              className="cleanup_btn-inside"
-              style={{ marginLeft: "15px", marginTop: "-1px"}}
+              className="cleanup_btn"
+              style={{ marginLeft: "15px", marginTop: "-1px",width:"24px",height: "24px",padding: "2px"}}
               onClick={() => this.props.delOption(this.props.keyId)}>
-              <p className="inside_p">...</p>
+              <i class="fas fa-trash-alt"></i>
             </button>
         </div>
     </div>

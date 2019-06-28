@@ -75,7 +75,7 @@ export default class Item extends Component {
                         text={reply.content}
                         type="text"
                         getValue={this.getValue}
-                        isErroring={this.state.isErroring}
+                        
                     />)
                     replysArray.push({ type: "text", content: reply.content, remark: "" })
                     textContent[`${options.length}${this.props.keyId}`] = reply.content
@@ -86,7 +86,7 @@ export default class Item extends Component {
                         delOption={this.delOption}
                         type="img"
                         getValue={this.getValue}
-                        isErroring={this.state.isErroring}
+                        
                     />)
                     replysArray.push({ type: "image", content: reply.content, remark: "" })
                 } else if (reply.type == "url") {
@@ -99,7 +99,7 @@ export default class Item extends Component {
                         getUrlRemark={this.getUrlRemark}
                         url={reply.content}
                         remark={reply.remark}
-                        isErroring={this.state.isErroring}
+                        
                     />)
                     replysArray.push({ type: "url", content: reply.content, remark: "" })
                     urlValue[`${options.length}${this.props.keyId}`] = reply.content
@@ -196,7 +196,7 @@ export default class Item extends Component {
                         delOption={this.delOption}
                         type="text"
                         getValue={this.getValue}
-                        isErroring={this.state.isErroring}
+                        
                     />
                 )
 
@@ -214,7 +214,7 @@ export default class Item extends Component {
                         delOption={this.delOption}
                         type="img"
                         getValue={this.getValue}
-                        isErroring={this.state.isErroring}
+                        
                     />
                 )
 
@@ -232,7 +232,7 @@ export default class Item extends Component {
                         type="url"
                         getUrlContent={this.getUrlContent}
                         getUrlRemark={this.getUrlRemark}
-                        isErroring={this.state.isErroring}
+                        
                     />
                 )
 
@@ -278,8 +278,11 @@ export default class Item extends Component {
     }
 
     saveqa = () => {
+        
+        document.getElementsByClassName('check-btn').click()
         let replyarray = []
         replyarray = this.state.optionsList.map((option) => {
+            
             if (option.props.type === 'text') {
                 return { type: 'text', content: this.state.textValue[option.props.keyId] || option.props.text }
             } else if (option.props.type === 'url') {

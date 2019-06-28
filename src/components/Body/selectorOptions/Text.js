@@ -7,7 +7,9 @@ class Text extends React.Component {
       textCount: 0,
       content: "",
       isFocus: false,
-      isFocusClick: false
+      isFocusClick: false,
+      delHover: false,
+      isEmpty: false
     }
   }
 
@@ -45,6 +47,19 @@ class Text extends React.Component {
     })
   }
 
+  checkInput = () => {
+    var input = document.getElementsByTagName('textarea')[0];
+    if(input.value===''){
+      this.setState({
+        isEmpty: true
+      })
+    }else{
+      this.setState({
+        isEmpty: false
+      })
+    }
+  }
+
   render() {
     const headerStyle = {
       color: '#8C96A0',
@@ -74,8 +89,17 @@ class Text extends React.Component {
     
 
     return (
-      <div className="optionStyle">
-        <div style={{ position: "relative", width: '100%' }} className="option-container">
+      <div className="optionStyle" 
+      
+      onMouseOver={() => {
+        this.setState({ delHover: true })
+      }}
+
+      onMouseOut={() => {
+        this.setState({ delHover: false})
+      }}
+      >
+        <div style={{ position: "relative", width: '100%',border:this.state.isEmpty?"solid 2px #E22424":""}} className="option-container">
           <div style={headerStyle}>
             <p><img src="https://s3-ap-northeast-1.amazonaws.com/www.memepr.com/smartQA/path_513.png" style={{ width: '12px', height: '12px', marginRight: '7px', color: 'white', marginBottom: '1px' }}></img>純文字訊息</p>
           </div>
@@ -85,19 +109,20 @@ class Text extends React.Component {
             <span style={textCountStyle}>{this.state.textCount}/75</span>
           </div>
         </div>
-        <div className="rwd_cleanup_btn inside_div" style={{opacity: this.state.isFocus? '1':'0'}}>
+        <div className="rwd_cleanup_btn inside_div" style={{
+          visibility: this.state.delHover ? 'visible' : 'hidden',
+          opacity: this.state.delHover ? 1 : 0,
+          transition: ' 0.5s '
+      }}>
             <button
-              className="cleanup_btn-inside"
-              style={{ marginLeft: "15px", marginTop: "-1px"}}
-              onClick={this.handleFocusClick}
+              className="cleanup_btn"
+              style={{ marginLeft: "10px", marginTop: "2px",outline:"none", width:"24px",height: "24px",padding: "2px",fontSize: "12px"}}
+              onClick={() => this.props.delOption(this.props.keyId)}
               >
-              <p className="inside_p">...</p>
+              <i class="fas fa-trash-alt"></i>
             </button>
             
-        </div>
-        <div className="choose_btn" style={{opacity: this.state.isFocusClick? '1':'0'}}>
-            <div className="choose_btn_options" onClick={() => this.props.delOption(this.props.keyId)}>刪除</div>
-            <div className="choose_btn_options">複製</div>
+            <button className="check-btn" style={{display: "none"}} onClick={this.checkInput}></button>
         </div>
       </div>
     )
