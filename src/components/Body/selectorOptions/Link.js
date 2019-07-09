@@ -3,7 +3,7 @@ import React from 'react'
 
 class Link extends React.Component {
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       content: '',
@@ -11,7 +11,7 @@ class Link extends React.Component {
       delHover: false
     }
   }
-  componentDidMount(){
+  componentDidMount() {
     this.setState({
       content: this.props.url,
       remark: this.props.remark
@@ -22,17 +22,17 @@ class Link extends React.Component {
     this.setState({
       content: e.target.value
     })
-    this.props.getUrlContent(e.target.value,this.props.keyId)
+    this.props.getUrlContent(e.target.value, this.props.keyId)
   }
 
   handleRemarkChange = (e) => {
     this.setState({
       remark: e.target.value
     })
-    this.props.getUrlRemark(e.target.value,this.props.keyId)
+    this.props.getUrlRemark(e.target.value, this.props.keyId)
   }
 
-  render(){
+  render() {
     const headerStyle = {
       color: '#8C96A0',
       fontSize: '12px',
@@ -57,6 +57,7 @@ class Link extends React.Component {
       right: '20px',
       color: '#CBCBCB'
     }
+
   return (
       <div className="optionStyle" onMouseOver={() => {
         this.setState({ delHover: true })
@@ -86,10 +87,10 @@ class Link extends React.Component {
               <i class="fas fa-trash-alt"></i>
             </button>
         </div>
-    </div>
-  )
+      </div>
+    )
   }
-  
-}  
+
+}
 
 export default Link

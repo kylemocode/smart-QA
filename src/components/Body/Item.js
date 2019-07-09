@@ -25,6 +25,7 @@ export default class Item extends Component {
             keywordTextArray: [],
             textValue: [],
             urlValue: [],
+            imageValue:[],
             urlRemark: [],
             delItem: false,
             revealButton:false,
@@ -62,6 +63,7 @@ export default class Item extends Component {
         const replysArray = this.state.replys
         const textContent = this.state.textValue
         const urlValue = this.state.urlValue
+        const imageValue = this.state.imageValue
         const urlRemark = this.state.urlRemark
 
         if (this.props.replys) {
@@ -79,16 +81,20 @@ export default class Item extends Component {
                     />)
                     replysArray.push({ type: "text", content: reply.content, remark: "" })
                     textContent[`${options.length}${this.props.keyId}`] = reply.content
-                } else if (reply.type == 'image') {
+                } else if (reply.type == 'img') {
                     options.push(<Image
                         key={reply.uuid}
                         keyId={reply.uuid}
                         delOption={this.delOption}
                         type="img"
+                        getImage={this.getImage}
+                        img={reply.content}
                         getValue={this.getValue}
                         uuid={this.props.uuid}
+
                     />)
-                    replysArray.push({ type: "image", content: reply.content, remark: "" })
+                    replysArray.push({ type: "img", content: reply.content})
+                    imageValue[`${options.length}${this.props.keyId}`] = reply.content
                 } else if (reply.type == "url") {
                     options.push(<Link
                         key={reply.uuid}
@@ -213,15 +219,17 @@ export default class Item extends Component {
                         keyId={index < 0 ? items.length : `${items.length}${index}`}
                         delOption={this.delOption}
                         type="img"
+                        getImage={this.getImage}
                         getValue={this.getValue}
                         uuid={this.props.uuid}
+
                     />
                 )
 
                 this.setState({
                     optionsList: items,
-
                 })
+                console.log(this.state.optionsList);
                 break;
             case ("link"):
                 items.push(
@@ -260,6 +268,13 @@ export default class Item extends Component {
             textValue: textValueArray
         })
     }
+    getImage = (image, i) => {
+        let imageValueArray = this.state.imageValue;
+        imageValueArray[i] = image
+        this.setState({
+            imageValue: imageValueArray
+        })
+    }
 
     getUrlContent = (url, i) => {
         let urlValueArray = this.state.urlValue;
@@ -293,10 +308,9 @@ export default class Item extends Component {
             } else if (option.props.type === 'url') {
                 return { type: 'url', content: this.state.urlValue[option.props.keyId] || option.props.url, remark: this.state.urlRemark[option.props.keyId] || option.props.remark }
             } else if (option.props.type === 'img') {
-
+                return { type: 'img', content: this.state.imageValue[option.props.keyId] || option.props.img }
             }
         })
-
 
         if (!this.props.isCreated) {
             axios({
@@ -330,6 +344,7 @@ export default class Item extends Component {
 
         } else {
             //update api
+            console.log(replyarray);
             axios({
                 method: 'POST', url: intentUpdate, headers: { ofelId: '888' }, data: {
                     intents: [
@@ -363,7 +378,6 @@ export default class Item extends Component {
     }
 
     render() {
-
         return (
             <div
                 className="container item_container_flex rwd_constainer"

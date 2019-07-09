@@ -79,7 +79,8 @@ class Text extends React.Component {
       maxHeight: '120px',
       padding: '16px',
       color: '#101010',
-      fontSize: '12px'
+      fontSize: '12px',
+      outline: 'none',
     }
     const textCountStyle = {
       position: 'absolute',
