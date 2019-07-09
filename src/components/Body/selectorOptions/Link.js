@@ -7,7 +7,8 @@ class Link extends React.Component {
     super(props);
     this.state = {
       content: '',
-      remark: ''
+      remark: '',
+      delHover: false
     }
   }
   componentDidMount() {
@@ -56,25 +57,35 @@ class Link extends React.Component {
       right: '20px',
       color: '#CBCBCB'
     }
-    return (
-      <div className="optionStyle">
-        <div style={{ position: "relative", width: '100%' }}>
-          <div style={headerStyle}>
-            <p><img src="https://s3-ap-northeast-1.amazonaws.com/www.memepr.com/smartQA/icon_link.png" style={{ width: '15px', height: '15px', marginRight: '7px' }}></img>超連結訊息</p>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <input placeholder="請輸入網址連結 ex: www.abc.com" style={{ height: '49px', fontSize: '12px', color: '#101010', border: 'solid 1px #F0F0F0', borderTop: 'none', borderBottom: 'none', padding: '16px', outline: 'none', }} onChange={this.handleUrlChange} value={this.state.content}></input>
-            <input placeholder="在此輸入文字註解" style={{ height: '64px', fontSize: '12px', color: '#101010', border: 'solid 1px #F0F0F0', padding: '16px', outline: 'none', }} onChange={this.handleRemarkChange} value={this.state.remark}></input>
-          </div>
-        </div>
 
-        <div className="rwd_cleanup_btn">
-          <button
-            className="cleanup_btn"
-            style={{ marginLeft: "15px", marginTop: "-1px" }}
-            onClick={() => this.props.delOption(this.props.keyId)}>
-            <i class="fas fa-trash-alt"></i>
-          </button>
+  return (
+      <div className="optionStyle" onMouseOver={() => {
+        this.setState({ delHover: true })
+      }}
+
+      onMouseOut={() => {
+        this.setState({ delHover: false})
+      }}>
+        <div style={{position: "relative",width:'100%'}}>
+            <div style={headerStyle}>
+                <p><img src="https://s3-ap-northeast-1.amazonaws.com/www.memepr.com/smartQA/icon_link.png" style={{width:'15px',height: '15px',marginRight: '7px'}}></img>超連結訊息</p>
+            </div>
+            <div style={{display: 'flex',flexDirection:'column'}}>
+                <input placeholder="請輸入網址連結 ex: www.abc.com" style={{height: '49px',fontSize:'12px',color:'#101010',border:'solid 1px #F0F0F0',borderTop: 'none',borderBottom: 'none',padding: '16px'}} onChange={this.handleUrlChange} value={this.state.content}></input>
+                <input placeholder="在此輸入文字註解" style={{height: '64px',fontSize:'12px',color:'#101010',border:'solid 1px #F0F0F0',padding: '16px'}} onChange={this.handleRemarkChange} value={this.state.remark}></input>
+            </div>
+        </div>
+        <div className="rwd_cleanup_btn inside_div" style={{
+          visibility: this.state.delHover ? 'visible' : 'hidden',
+          opacity: this.state.delHover ? 1 : 0,
+          transition: ' 0.5s '
+      }}>
+            <button
+              className="cleanup_btn"
+              style={{ marginLeft: "15px", marginTop: "-1px",width:"24px",height: "24px",padding: "2px"}}
+              onClick={() => this.props.delOption(this.props.keyId)}>
+              <i class="fas fa-trash-alt"></i>
+            </button>
         </div>
       </div>
     )

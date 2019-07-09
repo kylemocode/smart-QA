@@ -3,6 +3,7 @@ import New_Button from './New_Button';
 import './Body.css';
 import Item from './Item';
 import axios from 'axios';
+import { intentList } from '../../apiurl'
 
 export default class Body extends Component {
 
@@ -24,7 +25,7 @@ export default class Body extends Component {
   componentDidMount() {
     let dataList = [];
     // console.log(this.props.ofelId)
-    axios.get('https://ofel.ai/node/intent/list',{headers: {'ofelId': '888'}})
+    axios.get(intentList,{headers: {'ofelId': '888'}})
       .then((res) => res.data.data.map(qaItem => {
         dataList.push(<Item 
                         key={qaItem.id}

@@ -111,7 +111,7 @@
 }
 
 .update_btn {
-  padding:8.5px 15px;
+  padding:7px 14px;
   background-color: #FFF;
   border-radius: 4px;
   border:1px solid #1982D8;
@@ -144,6 +144,7 @@
   box-sizing: border-box;
   font-size: 12px;
   color: #101010;
+  margin-bottom: 20px;
 }
 
 .item_select {
@@ -168,7 +169,11 @@
   justify-content: center;
   align-items: center;
   margin-left: 15px;
+  transition: 0.4s;
 
+}
+.item_btn:hover {
+  background-color: #7D858D;
 }
 
 .item_textCount {
@@ -289,4 +294,120 @@ select option {
     display: flex;
     width: 100%;
     margin-top: 20px;
+    
   }
+
+ 
+  .tool {
+    position: relative;
+  }
+
+  .tooltiptext{
+    visibility: hidden;
+    width: 140px;
+    background-color: #333333;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 12px 11px;
+    z-index: 1;
+    position: absolute;
+    left: 63%;
+    top: -130%;
+    margin-left: -60px;
+    font-size: 11px;
+    opacity: 0;
+    transition: opacity 1s;
+  }
+
+  .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 20%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #333333 transparent transparent transparent;
+  }
+
+  .tool:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .saveBtn{
+    width: 14px;
+    height: 14px; 
+    margin-right: 7px;
+    color: white;
+    margin-bottom: 1px;
+  }
+  .update_btn {
+    
+  }
+
+  .cleanup_btn-inside {
+    background-color: #A5B1BC;
+    color: white;
+    width: 24px;
+    height: 24px;
+    border: none;
+    text-align: center;
+    padding-bottom: 20px;
+    margin-left: 15px;
+    margin-top: "-1px";
+    position: absolute;
+    right: -5%;
+    top: -5%;
+    
+    /* display: flex
+    justify-content: center;
+    align-items: center; */
+  }
+
+  .inside_p {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-70%)
+  }
+
+  
+ .inside_div {
+   position: relative;
+   left: 10px;
+ }
+
+  .cleanup_btn-inside:hover{
+  background-color: #7D858D;
+  transition-duration: 0.5s;
+}
+
+ .choose_btn{
+  width: 65px;
+  height: 53px;
+  /* border: 1px solid #000; */
+  margin-left: 1%;
+  margin-top: 2%;
+  z-index:10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 3px 6px rgba(0,0,0,0.2);
+ }
+
+ .choose_btn_options {
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    border-radius: 2px;
+    cursor: pointer;
+    
+ }
+
+ .choose_btn_options:hover{
+   background-color: #1982D8;
+   color: white;
+ }

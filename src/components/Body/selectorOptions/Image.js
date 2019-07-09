@@ -137,13 +137,14 @@ class Image extends React.Component {
           </div>
         </div>
 
-        <div className="rwd_cleanup_btn">
-          <button
-            className="cleanup_btn"
-            style={{ marginLeft: "15px", marginTop: "-1px" }}
-            onClick={() => this.props.delOption(this.props.keyId)}>
-            <i class="fas fa-trash-alt"></i>
-          </button>
+
+        <div className="rwd_cleanup_btn inside_div">
+            <button
+              className="cleanup_btn"
+              style={{ marginLeft: "15px", marginTop: "-1px",width:"24px",height: "24px",padding: "2px"}}
+              onClick={() => this.props.delOption(this.props.keyId)}>
+              <i class="fas fa-trash-alt"></i>
+            </button>
         </div>
       </div>
     )
