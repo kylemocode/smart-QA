@@ -7,13 +7,24 @@ class Image extends React.Component {
     this.state = {
       textCount: 0,
       image: '',
+      remark: ''
     }
+  }
+
+  componentDidMount() {
+    this.setState({
+      image: this.props.img,
+      remark: this.props.remark
+    })
+   
   }
 
   handleChange = (e) => {
     this.setState({
-      textCount: e.target.value.length
+      textCount: e.target.value.length,
+      remark: e.target.value
     })
+    this.props.getImageRemark(e.target.value, this.props.keyId)
   }
   getFiles = (files) => {
     if (/image/.test(files.type)) {
@@ -26,6 +37,7 @@ class Image extends React.Component {
     e.preventDefault();
     e.stopPropagation();
     let files = e.target.files;
+    
     // Process each file
     var allFiles = [];
     for (var i = 0; i < files.length; i++) {
@@ -49,7 +61,7 @@ class Image extends React.Component {
           base64: reader.result,
           file: file,
         };
-
+        
         // Push it to the state
         allFiles.push(fileInfo);
 
@@ -131,7 +143,7 @@ class Image extends React.Component {
           </div>
 
           <div style={{marginTop:'-6px'}}>
-            <textarea placeholder="在此輸入文字註解" style={textareaStyle} onChange={this.handleChange}>
+            <textarea placeholder="在此輸入文字註解" style={textareaStyle} onChange={this.handleChange} value={this.state.remark}>
             </textarea>
             <span style={textCountStyle}>{this.state.textCount}/30</span>
           </div>

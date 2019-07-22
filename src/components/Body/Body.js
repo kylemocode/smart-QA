@@ -36,7 +36,8 @@ export default class Body extends Component {
                         keywords={qaItem.keywords}
                         replys={qaItem.replys}
                         isCreated={true}
-                        ofelId={this.props.ofelId}/>)
+                        ofelId={this.props.ofelId}
+                        fetchApi={this.fetchApi}/>)
       }))
       .then(() => this.setState(() => ({
         itemList: dataList
@@ -53,6 +54,7 @@ export default class Body extends Component {
         deleteItem={this.deleteItem}
         keyId={index <0 ? items.length : `${items.length}${index}`}
         keywords=""
+        fetchApi={this.fetchApi}
       />
     )
     this.setState({itemList: items})
@@ -66,6 +68,27 @@ export default class Body extends Component {
     this.setState({itemList: newItems});
   }
 
+  fetchApi = () => {
+    let dataList = [];
+    // console.log(this.props.ofelId)
+    axios.get(intentList,{headers: {'ofelId': '888'}})
+      .then((res) => res.data.data.map(qaItem => {
+        dataList.push(<Item 
+                        key={qaItem.id}
+                        deleteItem={this.deleteItem}
+                        keyId={qaItem.id}
+                        uuid={qaItem.uuid}
+                        enable={qaItem.enable}
+                        keywords={qaItem.keywords}
+                        replys={qaItem.replys}
+                        isCreated={true}
+                        ofelId={this.props.ofelId}
+                        fetchApi={this.fetchApi}/>)
+      }))
+      .then(() => this.setState(() => ({
+        itemList: dataList
+      })))
+  }
 
 
   render() {

@@ -6,7 +6,8 @@ import Text from './selectorOptions/Text';
 import Link from './selectorOptions/Link';
 import Image from './selectorOptions/Image';
 import axios from 'axios';
-import { intentCreate,intentUpdate,intentDelete } from '../../apiurl'
+import { intentCreate, intentUpdate, intentDelete } from '../../apiurl';
+import FileBase64 from 'react-file-base64';
 
 export default class Item extends Component {
     constructor(props) {
@@ -25,13 +26,15 @@ export default class Item extends Component {
             keywordTextArray: [],
             textValue: [],
             urlValue: [],
-            imageValue:[],
+            imageValue: [],
+            imageRemark: [],
             urlRemark: [],
             delItem: false,
-            revealButton:false,
+            revealButton: false,
             isSaving: false,
             isCreating: false,
-            isErroring: false
+            isErroring: false,
+            isCreated: false
         }
 
 
@@ -71,34 +74,36 @@ export default class Item extends Component {
                 if (reply.type == 'text') {
 
                     options.push(<Text
-                        key={reply.uuid}
-                        keyId={reply.uuid}
+                        key={i}
+                        keyId={i}
                         delOption={this.delOption}
                         text={reply.content}
                         type="text"
                         getValue={this.getValue}
                         uuid={this.props.uuid}
+
                     />)
                     replysArray.push({ type: "text", content: reply.content, remark: "" })
                     textContent[`${options.length}${this.props.keyId}`] = reply.content
                 } else if (reply.type == 'img') {
                     options.push(<Image
-                        key={reply.uuid}
-                        keyId={reply.uuid}
+                        key={i}
+                        keyId={i}
                         delOption={this.delOption}
                         type="img"
                         getImage={this.getImage}
-                        img={reply.content}
+                        img={"https://ofel.ai/node/files/img/" + reply.content}
                         getValue={this.getValue}
                         uuid={this.props.uuid}
-
+                        remark={reply.remark}
+                        getImageRemark={this.getImageRemark}
                     />)
-                    replysArray.push({ type: "img", content: reply.content})
-                    imageValue[`${options.length}${this.props.keyId}`] = reply.content
+                    replysArray.push({ type: "img", content: reply.content })
+                    imageValue[`${i}`] = reply.content
                 } else if (reply.type == "url") {
                     options.push(<Link
-                        key={reply.uuid}
-                        keyId={reply.uuid}
+                        key={i}
+                        keyId={i}
                         delOption={this.delOption}
                         type="url"
                         getUrlContent={this.getUrlContent}
@@ -125,7 +130,9 @@ export default class Item extends Component {
                 replys: replysArray,
                 textValue: textContent,
                 urlValue,
-                urlRemark
+                urlRemark,
+                isCreated: this.props.isCreated || false
+
             }))
         }, 0)
     }
@@ -222,14 +229,14 @@ export default class Item extends Component {
                         getImage={this.getImage}
                         getValue={this.getValue}
                         uuid={this.props.uuid}
-
+                        getImageRemark={this.getImageRemark}
                     />
                 )
 
                 this.setState({
                     optionsList: items,
                 })
-                console.log(this.state.optionsList);
+                // console.log(this.state.optionsList);
                 break;
             case ("link"):
                 items.push(
@@ -276,6 +283,14 @@ export default class Item extends Component {
         })
     }
 
+    getImageRemark = (remark, i) => {
+        let imageRemark = this.state.imageRemark;
+        imageRemark[i] = remark
+        this.setState({
+            imageRemark
+        })
+    }
+
     getUrlContent = (url, i) => {
         let urlValueArray = this.state.urlValue;
         urlValueArray[i] = url
@@ -292,27 +307,59 @@ export default class Item extends Component {
         })
     }
 
-    saveqa = () => {
-        
+    toDataUrl = (url) => {
+        return new Promise((resolve) => {
+            var xhr = new XMLHttpRequest();
+            xhr.onload = function () {
+                var reader = new FileReader();
+                reader.onloadend = function () {
+                    resolve(reader.result);
+                }
+                reader.readAsDataURL(xhr.response);
+            };
+            xhr.open('GET', url);
+            xhr.responseType = 'blob';
+            xhr.send();
+        })
+    }
+
+    isBase64 = (str) => {
+        if (str === '' || str.trim() === '') { return false; }
+        try {
+            return btoa(atob(str)) == str;
+        } catch (err) {
+            return false;
+        }
+    }
+
+    saveqa = async () => {
+
         // let inputList = document.getElementsByClassName(`checkBtn-${this.props.uuid}`)
         // console.log(inputList)
         // for(let i=0;i<inputList.length;i++){
         //     inputList[i].click()
         // }
+        console.log(this.state.optionsList)
 
-        let replyarray = []
-        replyarray = this.state.optionsList.map((option) => {
-            
-            if (option.props.type === 'text') {
-                return { type: 'text', content: this.state.textValue[option.props.keyId] || option.props.text }
-            } else if (option.props.type === 'url') {
-                return { type: 'url', content: this.state.urlValue[option.props.keyId] || option.props.url, remark: this.state.urlRemark[option.props.keyId] || option.props.remark }
-            } else if (option.props.type === 'img') {
-                return { type: 'img', content: this.state.imageValue[option.props.keyId] || option.props.img }
-            }
-        })
+        // console.log(replyarray);
+        if (!this.state.isCreated) {
 
-        if (!this.props.isCreated) {
+            let replyarray = []
+
+            replyarray = this.state.optionsList.map((option, i) => {
+
+                if (option.props.type === 'text') {
+                    return { type: 'text', content: this.state.textValue[option.props.keyId] || option.props.text }
+                } else if (option.props.type === 'url') {
+                    return { type: 'url', content: this.state.urlValue[option.props.keyId] || option.props.url, remark: this.state.urlRemark[option.props.keyId] || option.props.remark }
+                } else if (option.props.type === 'img') {
+
+                    return { type: 'img', content: this.state.imageValue[option.props.keyId] || option.props.img, remark: this.state.imageRemark[option.props.keyId] || option.props.remark }
+
+
+                }
+            })
+
             axios({
                 method: 'POST', url: intentCreate, headers: { ofelId: '888' }, data: {
                     intents: [
@@ -325,54 +372,85 @@ export default class Item extends Component {
                 }
             })
                 .then(() => {
-                    if(this.state.isErroring === true){
+                    if (this.state.isErroring === true) {
                         this.setState({
                             isErroring: false
                         })
-                    }else{
+                    } else {
                         return true
                     }
                 })
+                // .then(() => this.props.fetchApi())
                 .then(() => this.setState({
-                    created: true
+                    created: true,
+                    isCreated: true
                 }))
-                .then(() => this.setState({isCreating: true}))
+                .then(() => this.setState({ isCreating: true }))
                 .then(() => setTimeout(() => {
-                    this.setState({isCreating: false})
-                },2500))
-                .catch(() => this.setState({isErroring: true}))
+                    this.setState({ isCreating: false })
+                }, 2500))
+                // .then(setTimeout(() => {
+                //     this.props.fetchApi();
+                // },2000))
+                .then(() => setTimeout(() => {
+                    this.props.fetchApi()
+                }, 1000))
+                .catch(() => this.setState({ isErroring: true }))
+
 
         } else {
-            //update api
-            console.log(replyarray);
+            let replyarray = this.state.optionsList.map( async (option, i) => {
+                if (option.props.type === 'text') {
+                    return { type: 'text', content: this.state.textValue[option.props.keyId] || option.props.text }
+                } else if (option.props.type === 'url') {
+                    return { type: 'url', content: this.state.urlValue[option.props.keyId] || option.props.url, remark: this.state.urlRemark[option.props.keyId] || option.props.remark }
+                } else if (option.props.type === 'img') {
+                    let result = async () => {
+                        if (!this.isBase64(this.state.imageValue[option.props.keyId] || option.props.img)) {
+                            let base64 = async () => {
+                                return await this.toDataUrl(this.state.imageValue[option.props.keyId] || option.props.img);
+                            }
+                            const response = await base64();
+                            return { type: 'img', content: response, remark: this.state.imageRemark[option.props.keyId] || option.props.remark }
+                        } else {
+                            return { type: 'img', content: this.state.imageValue[option.props.keyId] || option.props.img, remark: this.state.imageRemark[option.props.keyId] || option.props.remark }
+                        }
+                    }
+                    const response = await result();
+                    return response;
+                }
+            })
+            const updateReply = await Promise.all(replyarray);
+          
+            
             axios({
                 method: 'POST', url: intentUpdate, headers: { ofelId: '888' }, data: {
                     intents: [
-
                         {
                             uuid: this.props.uuid,
                             enable: this.state.isOpen,
                             keywords: this.state.keywordTextArray,
-                            replys: replyarray,
+                            replys: updateReply,
                         }
                     ]
                 }
             })
                 // .then(() => alert('儲存成功'))
                 .then(() => {
-                    if(this.state.isErroring === true){
+                    if (this.state.isErroring === true) {
                         this.setState({
                             isErroring: false
                         })
-                    }else{
+                    } else {
                         return true
                     }
                 })
-                .then(() => this.setState({isSaving: true}))
+                .then(() => this.setState({ isSaving: true }))
                 .then(() => setTimeout(() => {
-                    this.setState({isSaving: false})
-                },2500))
-                .catch(() => this.setState({isErroring: true}))
+                    this.setState({ isSaving: false })
+                }, 2500))
+                // .then(() => this.props.fetchApi())
+                .catch(() => this.setState({ isErroring: true }))
         }
 
     }
@@ -401,11 +479,11 @@ export default class Item extends Component {
 
                             <div
                                 style={{
-                                    backgroundColor:this.state.isOpen ? this.state.revealButton ? '#106fbc' : '#1982D8' : this.state.revealButton ? '#D5D5D5' : '#E0E0E0',
+                                    backgroundColor: this.state.isOpen ? this.state.revealButton ? '#106fbc' : '#1982D8' : this.state.revealButton ? '#D5D5D5' : '#E0E0E0',
                                     transition: '0.3s'
                                 }}
-                                onMouseOver={() => this.setState({revealButton: true})}
-                                onMouseOut={() => this.setState({revealButton: false})}
+                                onMouseOver={() => this.setState({ revealButton: true })}
+                                onMouseOut={() => this.setState({ revealButton: false })}
                                 onClick={this.handleReveal}
                             >
                                 {this.state.isReveal ? <i class="fas fa-chevron-up"></i> : <i class="fas fa-chevron-down"></i>}</div>
@@ -414,7 +492,7 @@ export default class Item extends Component {
                             <div className="row">
                                 <div className="col-md-6 col-sm-12 ">
                                     <p className="rwd_content" style={{ fontSize: "14px" }}>當用戶輸入以下 相似 或 相同 關鍵字:</p>
-                                    
+
                                     <div className="tool">
                                         <input
                                             className="item_textarea rwd_content"
@@ -428,12 +506,12 @@ export default class Item extends Component {
                                                 }
                                             }}
                                         >
-                                            
+
                                         </input>
                                         <span className="tooltiptext">輸入"enter"區分關鍵字</span>
                                     </div>
-                                    
-                                    
+
+
                                     <div>
                                         <span className="item_warning">{this.state.textCount > 50 ? "※超過字數限制" : ""}</span>
                                     </div>
@@ -464,15 +542,15 @@ export default class Item extends Component {
                         </div> : ''}
                         <hr style={{ margin: "0" }} />
                         <div className="item_status">
-                            <div style={{ display: "flex", alignItems: 'center',justifyContent:"flex-end"}}>
+                            <div style={{ display: "flex", alignItems: 'center', justifyContent: "flex-end" }}>
                                 <ToggleButton handleOpen={this.handleOpen} isOpen={this.state.isOpen} />
-                                <p style={{ fontSize: "14px" }} style={{ marginRight: '20px', marginTop: '5px',opacity:0.7 }}>智能對話狀態</p>
-                                
+                                <p style={{ fontSize: "14px" }} style={{ marginRight: '20px', marginTop: '5px', opacity: 0.7 }}>智能對話狀態</p>
+
                             </div>
                             <div>
-                                {this.state.isSaving && <span style={{marginRight:"20px",fontSize:"14px"}}><img src="https://s3-ap-northeast-1.amazonaws.com/www.memepr.com/smartQA/icon_success.png " style={{ width: '14px', height: '14px', marginRight: '7px', color: 'white', marginBottom: '1px' }}></img>儲存成功!</span>}
-                                {this.state.isCreating && <span style={{marginRight:"20px",fontSize:"14px"}}><img src="https://s3-ap-northeast-1.amazonaws.com/www.memepr.com/smartQA/icon_success.png  " style={{ width: '14px', height: '14px', marginRight: '7px', color: 'white', marginBottom: '1px' }}></img>建立成功!</span>}
-                                {this.state.isErroring && <span style={{marginRight:"20px",fontSize:"14px"}}><img src="https://s3-ap-northeast-1.amazonaws.com/www.memepr.com/smartQA/icon_caution.png  " style={{ width: '14px', height: '14px', marginRight: '7px', color: 'white', marginBottom: '1px' }}></img>此對話模組尚未設計完成</span>}
+                                {this.state.isSaving && <span style={{ marginRight: "20px", fontSize: "14px" }}><img src="https://s3-ap-northeast-1.amazonaws.com/www.memepr.com/smartQA/icon_success.png " style={{ width: '14px', height: '14px', marginRight: '7px', color: 'white', marginBottom: '1px' }}></img>儲存成功!</span>}
+                                {this.state.isCreating && <span style={{ marginRight: "20px", fontSize: "14px" }}><img src="https://s3-ap-northeast-1.amazonaws.com/www.memepr.com/smartQA/icon_success.png  " style={{ width: '14px', height: '14px', marginRight: '7px', color: 'white', marginBottom: '1px' }}></img>建立成功!</span>}
+                                {this.state.isErroring && <span style={{ marginRight: "20px", fontSize: "14px" }}><img src="https://s3-ap-northeast-1.amazonaws.com/www.memepr.com/smartQA/icon_caution.png  " style={{ width: '14px', height: '14px', marginRight: '7px', color: 'white', marginBottom: '1px' }}></img>此對話模組尚未設計完成</span>}
                                 <button
                                     className="update_btn"
                                     style={{
@@ -480,10 +558,10 @@ export default class Item extends Component {
                                     }}
                                     onClick={this.saveqa}
                                 >
-                                {this.props.isCreated || this.state.created ? "儲存" : "建立"}
+                                    {this.props.isCreated || this.state.created ? "儲存" : "建立"}
                                 </button>
                             </div>
-                            
+
 
                         </div>
                     </div>
@@ -523,4 +601,3 @@ export default class Item extends Component {
         )
     }
 }
-
