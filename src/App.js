@@ -3,6 +3,7 @@ import Header from './components/Header/Header';
 import Body from './components/Body/Body';
 import axios from 'axios';
 
+
 export default class App extends Component {
   constructor(props) {
     super(props)
@@ -49,7 +50,8 @@ export default class App extends Component {
     // console.log(intentQuota);
     // console.log(ofelId);
     return (
-      <div>
+
+      <div style={{position:'relative'}}>
         <Header />
         {ofelId ? (
           <Body intentQuota={intentQuota} ofelId={ofelId}/>

@@ -14,7 +14,7 @@ export default class Item extends Component {
         super(props);
         this.state = {
             isOpen: false,
-            isReveal: false,
+            isReveal: this.props.forceReveal? true : false,
             del: false,
             textCount: 0,
             textAreaValue: '',
@@ -476,17 +476,20 @@ export default class Item extends Component {
                             <p>{this.state.keywordTextArray.slice(0, 2).map((text) => {
                                 return text + ' '
                             })}</p>
+                            
 
+                            
                             <div
                                 style={{
                                     backgroundColor: this.state.isOpen ? this.state.revealButton ? '#106fbc' : '#1982D8' : this.state.revealButton ? '#D5D5D5' : '#E0E0E0',
-                                    transition: '0.3s'
+                                    transition: '0.3s',
+                                    width: "80px"
                                 }}
                                 onMouseOver={() => this.setState({ revealButton: true })}
                                 onMouseOut={() => this.setState({ revealButton: false })}
                                 onClick={this.handleReveal}
                             >
-                                {this.state.isReveal ? <i class="fas fa-chevron-up"></i> : <i class="fas fa-chevron-down"></i>}</div>
+                            <p style={{marginRight:"8px"}}>展開編輯</p>{this.state.isReveal ? <i class="fas fa-chevron-up"></i> : <i class="fas fa-chevron-down"></i>}</div>
                         </div>
                         {this.state.isReveal ? <div className="container item_input" style={{ opacity: this.state.isReveal ? 1 : 0 }}>
                             <div className="row">

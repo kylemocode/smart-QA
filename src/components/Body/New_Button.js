@@ -1,6 +1,8 @@
-import React from 'react'
+import React,{useState} from 'react'
+import Popup from './Popup';
 
 const New_Button = (props) => {
+
   const btnStyle = {
     //   width: '128px',
       height: '40px',
@@ -13,6 +15,9 @@ const New_Button = (props) => {
 
   return (
     <div className="container" style={{cursor: 'pointer'}}>
+      <Popup 
+        modalOpen={props.isPopupOpen}
+        handlePopupClose={props.handlePopupClose}/>
       <button style={btnStyle} onClick={props.addItem}>+  新增智能</button>
       <span className="count">{props.count}/{props.intentQuota}(已建立智能/智能上限)</span>
     </div>
