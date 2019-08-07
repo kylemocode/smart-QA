@@ -1,0 +1,42 @@
+{
+  "name": "smartqa",
+  "version": "2.0.1",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.19.0",
+    "bootstrap": "^4.3.1",
+    "circular-std": "^1.0.0",
+    "peer": "^0.2.10",
+    "ramda": "^0.26.1",
+    "react": "^16.4.1",
+    "react-addons-perf": "^15.4.2",
+    "react-dom": "^16.4.1",
+    "react-dropzone": "^10.1.4",
+    "react-file-base64": "^1.0.3",
+    "react-modal": "^3.9.1",
+    "react-scripts": "^3.0.0",
+    "styled-components": "^4.2.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "dotenv": "^8.0.0",
+    "gh-pages": "^2.1.0"
+  }
+}
