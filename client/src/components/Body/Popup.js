@@ -46,12 +46,18 @@ const Popup = (props) =>  {
                 </div>
             </div>
             
-            <div>
-            <p>哎呀!智能問答設置已達目前方案上限</p>
-            <p>快快升級你的方案以解鎖完整功能!</p>
-            <div>
-            
+            <div style={{textAlign:'center',fontWeight:'700',width:'100%',height:'120px'}}>
+                <p>哎呀!智能問答設置已達目前方案上限</p>
+                <p>快快升級你的方案以解鎖完整功能!</p>
             </div>
+            
+            <div style={{width:'100%',height:'80px',display:'flex',borderTop:'solid 1px rgba(0,0,0,0.3)'}}>
+              <div style={{width:'50%',height:'100%',textAlign:'center',display:'flex',justifyContent:'center',alignItems:'center',cursor:'pointer',borderRight:'solid 1px rgba(0,0,0,0.3)',fontWeight:'700'}}>
+                <p style={{top:'50px'}}>取消</p>
+              </div>
+              <div style={{width:'50%',height:'100%',textAlign:'center',display:'flex',justifyContent:'center',alignItems:'center',cursor:'pointer',fontWeight:'700'}}>
+                <p style={{color:'#FFB818'}}>立即升級</p>
+              </div>
             </div>
         </Modal>
     )

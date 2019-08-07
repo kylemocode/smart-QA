@@ -76,6 +76,7 @@ export default class Body extends Component {
       )
       this.setState({itemList: items})
     }
+    
   }
 
   deleteItem(i) {
